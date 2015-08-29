@@ -1,0 +1,18 @@
+<?php 
+
+return array(
+		
+	array('title' => 'Module : User', 'access_url' =>'home/user'),
+	array('title' => 'Module : Group', 'access_url' =>'home/group'),
+	array('title' => 'Module : Configure', 'access_url' =>'home/config-system'),				
+
+	array('title' => 'Module : Configure Page', 'access_url' =>'page/configure'),
+		
+	array('title' => 'Module : San Pham', 'access_url' =>'page/content/san-pham'),
+	array('title' => 'Module : Categry San Pham', 'access_url' =>'page/category/san-pham'),
+				
+	array('title' => 'Module : Tin Tuc', 'access_url' =>'page/content/tin-tuc'),
+	array('title' => 'Module : Su Kien', 'access_url' =>'page/content/su-kien'),		
+	array('title' => 'Module : Khuyen Mai', 'access_url' =>'page/content/khuyen-mai')
+		
+);

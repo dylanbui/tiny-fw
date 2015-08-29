@@ -1,0 +1,178 @@
+<?php
+
+class Page_ConfigureController extends BaseController
+{
+
+	public function __construct()
+	{
+		parent::__construct();
+	}
+
+	public function indexAction() 
+	{
+// 	    $this->renderView('site/home/index');
+	}
+	
+	public function listAction()
+	{
+		$objPageConf = new Page_Configure();
+		
+		$this->oView->copy_url = site_url('page/configure/copy/');
+		$this->oView->delete_url = site_url('page/configure/delete/');
+		$this->oView->update_url = site_url('page/configure/update/');
+		
+		$this->oView->rsPages = $objPageConf->getRowset();
+		
+		$this->renderView('page/configure/list');
+	}
+	
+	public function addAction()
+	{
+		if ($this->oParams->isPost()) 
+		{
+			$data['name'] = $this->oParams->varPost('txtName' ,0);
+			$data['code'] = $this->oParams->varPost('txtCode' ,0);
+			$data['page'] = $this->oParams->varPost('txtPage' ,0);
+			$data['create_at'] = now_to_mysql();
+
+			$objPageConf = new Page_Configure();
+			$objPageConf->insert($data);
+		}
+		redirect("page/configure/list");
+	}
+
+	public function updateAction($page_id)
+	{
+		$this->oView->link_url = site_url('page/configure/update/'.$page_id);
+		$objPageConf = new Page_Configure();
+	
+		if ($this->oParams->isPost())
+		{
+			$data['name'] = $this->oParams->varPost('txtName');
+			$data['content'] = $this->oParams->varPost('txtContent');
+			
+			unset($this->oParams->post['txtName']);
+			unset($this->oParams->post['txtContent']);
+			
+			$use_category = $this->oParams->varPost('use_category', 0);
+			$this->oParams->post['use_category'] = $use_category;
+			
+			$data['data'] = serialize($this->oParams->post);
+			$objPageConf->update($page_id,$data);
+			
+// 			echo "<pre>";
+// 			print_r($_POST);
+// 			echo "</pre>";
+// 			echo "<br>-------------<br>";
+// 			echo "<pre>";
+// 			print_r($this->oParams->post);
+// 			echo "</pre>";
+// 			exit();
+			
+			redirect("page/configure/list");
+		}
+	
+		$rowPageConf = $objPageConf->get($page_id);
+		
+// 		echo "<pre>";
+// 		print_r(unserialize($rowPageConf['data']));
+// 		echo "</pre>";
+// 		exit();
+		
+		$this->oView->arrMainDbFields = $objPageConf->loadContentMainFields();
+		$this->oView->arrLnDbFields = $objPageConf->loadContentLnFields();
+		
+		$this->oView->arrMainCatDbFields = $objPageConf->loadCategoryMainFields();
+		$this->oView->arrLnCatDbFields = $objPageConf->loadCategoryLnFields();
+		
+		$this->oView->rowPageConf = $rowPageConf;
+		
+		$arrMainField = $arrLnField = $arrMainImage = $arrLnImage = $arrGalImage = array();
+		$intUseGallery = $intUseCategory = 0;
+		$arrGalImage = array();
+		$arrMainCatField = $arrMainCatImage = $arrLnCatField = $arrLnCatImage = array();
+		
+		if (!empty($rowPageConf['data'])) 
+		{
+			$data = unserialize($rowPageConf['data']);
+			
+			$arrMainField = $data['main_field'];
+			$arrLnField = $data['ln_field'];
+			$arrMainImage = $data['main_image'];
+			$arrLnImage = $data['ln_image'];
+			
+			// Category Data
+			$intUseCategory = $data['use_category'];
+			$arrMainCatField = $data['main_cat_field'];
+			$arrLnCatField = $data['ln_cat_field'];
+			$arrMainCatImage = $data['main_cat_image'];			
+			$arrLnCatImage = $data['ln_cat_image'];
+			
+			// Gallery Data
+			$arrGalImage = $data['gallery_image'];			
+		}
+	
+		$this->oView->arrMainField = $arrMainField;
+		$this->oView->arrLnField = $arrLnField;
+		$this->oView->arrMainImage = $arrMainImage;
+		$this->oView->arrLnImage = $arrLnImage;
+		
+		$this->oView->intUseCategory = $intUseCategory;
+		$this->oView->arrMainCatField = $arrMainCatField;
+		$this->oView->arrLnCatField = $arrLnCatField;
+		$this->oView->arrMainCatImage = $arrMainCatImage;
+		$this->oView->arrLnCatImage = $arrLnCatImage;
+
+		$this->oView->arrGalImage = $arrGalImage;
+		
+		$this->renderView('page/configure/_form');
+	}	
+	
+	public function copyAction($page_id = 0)
+	{
+		$objPageConf = new Page_Configure();
+		$rowPageConf = $objPageConf->get($page_id);
+		
+		if ($this->oParams->isPost() && !empty($rowPageConf))
+		{		
+			$data['name'] = $this->oParams->varPost('txtName' ,0);
+			$data['code'] = $this->oParams->varPost('txtCode' ,0);
+			$data['page'] = $this->oParams->varPost('txtPage' ,0);
+			$data['data'] = $rowPageConf['data'];		
+			$data['create_at'] = now_to_mysql();
+	
+			$objPageConf->insert($data);
+		}
+		
+		redirect("page/configure/list");
+	}
+	
+	public function deleteAction($page_id = 0)
+	{
+		$objPageConf = new Page_Configure();
+		$rowPageConf = $objPageConf->get($page_id);
+		
+		if (!empty($rowPageConf))
+		{
+			// TODO : Delete relation tables
+			$objPageConf->delete($page_id);
+		}
+
+		redirect("page/configure/list");
+	}
+	
+	public function truncateAction()
+	{
+		$objPageConf = new Page_Configure();
+		$objPageConf->truncatePageModule();
+		redirect("page/configure/list");		
+	}
+
+	public function clearAllRecordAction()
+	{
+		$objPageConf = new Page_Configure();
+		$objPageConf->clearAllPageModuleData();
+		redirect("page/configure/list");		
+	}	
+	
+}
