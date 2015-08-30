@@ -14,9 +14,6 @@ final class Request
 
 	public function __construct($route = NULL, $args = array()) 
 	{
-		$config = Config::getInstance();
-		$display_errors = $config->config_values['application']['display_errors'];
-		
 		$this->parseUri($route);
 		
 		$moduleDir = __APP_PATH . '/controllers/' . $this->module;

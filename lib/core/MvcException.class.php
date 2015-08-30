@@ -39,6 +39,11 @@ class MvcException extends Exception
 		// Note:  Do not log messages from this constructor.
 	}
 	
+	function show_exception()
+	{
+		echo $this->show_error('An Error Was Encountered', $this->message);
+	}
+	
 	// --------------------------------------------------------------------
 
 	/**

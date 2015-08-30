@@ -107,8 +107,9 @@ try
 }
 catch(MvcException $e)
 {
-	if($config->config_values['application']['display_errors'])
-		show_error($e->getMessage());
+	if(!$config->config_values['application']['display_error_404'])
+// 		show_error($e->getMessage());
+		$e->show_exception();
 	else 				
 		//show a 404 page here
 		show_404();
