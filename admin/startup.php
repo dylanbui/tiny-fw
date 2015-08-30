@@ -30,7 +30,7 @@
 // 	require __SITE_PATH . '/lib/core/SimpleActiveRecord.class.php'; /* Ket noi dung ActiveRecord */
 	
  	/*** registry auto load ***/
-// 	spl_autoload_register(null, FALSE);
+	spl_autoload_register(null, FALSE);
 	spl_autoload_extensions('.php, .class.php, .lang.php, .model.php');
 	spl_autoload_register('_autoload');	
 	

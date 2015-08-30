@@ -1,15 +1,13 @@
 <?php 
-
 // --- -------------------------------------------------------------------------------------------------- ---//
 // --- APPLICATION ---//
-
 
 $config['application']['default_uri'] 				= "site/home/index";
 $config['application']['admin_default_uri'] 		= "home/dashboard/show";
 $config['application']['admin_header_title'] 		= "FLATY Admin";
 $config['application']['admin_footer_title'] 		= "2015 © FLATY Admin Template.";
-$config['application']['error_reporting'] 			= E_ALL; // 0 : Khong hien thi bat cu thong bao nao
-// $config['application']['error_reporting'] 			= E_ALL ^ E_DEPRECATED; // Hien thi thong bao tat ca cac loi tru cac ham DEPRECATED
+// $config['application']['error_reporting'] 			= E_ALL; // 0 : Khong hien thi bat cu thong bao nao
+$config['application']['error_reporting'] 			= E_ALL ^ E_DEPRECATED; // Hien thi thong bao tat ca cac loi tru cac ham DEPRECATED
 $config['application']['display_errors'] 			= TRUE;
 $config['application']['language'] 					= "en";
 $config['application']['timezone'] 					= "Asia/Ho_Chi_Minh";
