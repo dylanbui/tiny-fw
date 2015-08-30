@@ -46,39 +46,8 @@ if ( ! function_exists('site_url'))
 		}
 		
 		return $z_base_url.$uri;
-		
-// 		$z_site_url = '';
-// 		if(isset($_SERVER['IIS_UrlRewriteModule']))
-// 			$z_site_url = $z_base_url.'index.php/'.$uri;
-// 		else
-// 			$z_site_url = $z_base_url.$uri;
-		
-// 		return $z_site_url;
-		
-// 		http://stackoverflow.com/questions/9021425/how-to-check-if-mod-rewrite-is-enabled-in-php
-// 		MOD REWRITE CHECK
-		// Check IIS host
-// 		if(isset($_SERVER['IIS_UrlRewriteModule']))
-// 			$z_site_url = base_url().'index.php/'.$uri;
-// 		else
-// 			$z_site_url = base_url($uri);
-				
-//  		return $z_site_url;		
 	}
 }
-
-// if ( ! function_exists('base_url'))
-// {
-//     function base_url($uri = '')
-//     {
-//     	static $z_base_url = NULL;
-//     	if(is_null($z_base_url))
-//     	{
-//     		$z_base_url = str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);
-//     	}
-//        	return $z_base_url.$uri;
-//     }
-// }
 
 if ( ! function_exists('df'))
 {
@@ -228,143 +197,6 @@ function is_really_writable($file)
 	return TRUE;
 }
 
-// ------------------------------------------------------------------------
-
-/**
-* Class registry
-*
-* This function acts as a singleton.  If the requested class does not
-* exist it is instantiated and set to a static variable.  If it has
-* previously been instantiated the variable is returned.
-*
-* @access	public
-* @param	string	the class name being requested
-* @param	bool	optional flag that lets classes get loaded but not instantiated
-* @return	object
-*/
-function &load_class($class, $instantiate = TRUE)
-{
-	static $objects = array();
-
-	// Does the class exist?  If so, we're done...
-	if (isset($objects[$class]))
-	{
-		return $objects[$class];
-	}
-
-	// If the requested class does not exist in the application/libraries
-	// folder we'll load the native class from the system/libraries folder.	
-	if (file_exists(APPPATH.'libraries/'.config_item('subclass_prefix').$class.EXT))
-	{
-		require(BASEPATH.'libraries/'.$class.EXT);
-		require(APPPATH.'libraries/'.config_item('subclass_prefix').$class.EXT);
-		$is_subclass = TRUE;
-	}
-	else
-	{
-		if (file_exists(APPPATH.'libraries/'.$class.EXT))
-		{
-			require(APPPATH.'libraries/'.$class.EXT);
-			$is_subclass = FALSE;
-		}
-		else
-		{
-			require(BASEPATH.'libraries/'.$class.EXT);
-			$is_subclass = FALSE;
-		}
-	}
-
-	if ($instantiate == FALSE)
-	{
-		$objects[$class] = TRUE;
-		return $objects[$class];
-	}
-
-	if ($is_subclass == TRUE)
-	{
-		$name = config_item('subclass_prefix').$class;
-
-		$objects[$class] =& instantiate_class(new $name());
-		return $objects[$class];
-	}
-
-	$name = ($class != 'Controller') ? 'CI_'.$class : $class;
-
-	$objects[$class] =& instantiate_class(new $name());
-	return $objects[$class];
-}
-
-/**
- * Instantiate Class
- *
- * Returns a new class object by reference, used by load_class() and the DB class.
- * Required to retain PHP 4 compatibility and also not make PHP 5.3 cry.
- *
- * Use: $obj =& instantiate_class(new Foo());
- * 
- * @access	public
- * @param	object
- * @return	object
- */
-function &instantiate_class(&$class_object)
-{
-	return $class_object;
-}
-
-/**
-* Loads the main config.php file
-*
-* @access	private
-* @return	array
-*/
-function &get_config()
-{
-	static $main_conf;
-
-	if ( ! isset($main_conf))
-	{
-		if ( ! file_exists(APPPATH.'config/config'.EXT))
-		{
-			exit('The configuration file config'.EXT.' does not exist.');
-		}
-
-		require(APPPATH.'config/config'.EXT);
-
-		if ( ! isset($config) OR ! is_array($config))
-		{
-			exit('Your config file does not appear to be formatted correctly.');
-		}
-
-		$main_conf[0] =& $config;
-	}
-	return $main_conf[0];
-}
-
-/**
-* Gets a config item
-*
-* @access	public
-* @return	mixed
-*/
-function config_item($item)
-{
-	static $config_item = array();
-
-	if ( ! isset($config_item[$item]))
-	{
-		$config =& get_config();
-
-		if ( ! isset($config[$item]))
-		{
-			return FALSE;
-		}
-		$config_item[$item] = $config[$item];
-	}
-
-	return $config_item[$item];
-}
-
-
 /**
 * Error Handler
 *
@@ -379,7 +211,6 @@ function config_item($item)
 */
 function show_error($message, $status_code = 500)
 {
-//	$error =& load_class('Exceptions');
 	$error = new MvcException();
 	echo $error->show_error('An Error Was Encountered', $message, 'error_general', $status_code);
 	exit;
@@ -398,7 +229,6 @@ function show_error($message, $status_code = 500)
 */
 function show_404($page = '')
 {
-//	$error =& load_class('Exceptions');
 	$error = new MvcException();
 	$error->show_404($page);
 	exit;
@@ -537,6 +367,13 @@ function camelcaseToHyphen($string)
 	return strtolower(preg_replace('/([^A-Z])([A-Z])/', "$1-$2", $string));
 }
 
+/**
+ * Autoload define
+ *
+ * @access	public
+ * @param	string
+ * @return	bool
+ */
 function _autoload($class)
 {
 // 	if(class_exists($class)) return;	
@@ -583,8 +420,18 @@ function _autoload($class)
 	
 	return FALSE;
 }
+/*** registry auto load ***/
+spl_autoload_register(null, FALSE);
+spl_autoload_extensions('.php, .class.php, .lang.php, .model.php');
+spl_autoload_register('_autoload');
 
-// Load helper function
+/**
+ * Load helper function
+ *
+ * @access	public
+ * @param	string
+ * @return	bool
+ */
 function helperLoader($functions)
 {
 	if(!is_array($functions))
@@ -620,7 +467,6 @@ function _exception_handler($severity, $message, $filepath, $line)
 	 // use version 4 style class functions (without prefixes
 	 // like "public", "private", etc.) you'll get notices telling
 	 // you that these have been deprecated.
-	
 	 
 	if ($severity == E_STRICT)
 	{
@@ -628,8 +474,6 @@ function _exception_handler($severity, $message, $filepath, $line)
 	}
 
 	$error = new MvcException();	
-
-//	$error =& load_class('Exceptions');
 
 	// Should we display the error?
 	// We'll get the current error_reporting level and add its bits
@@ -641,52 +485,7 @@ function _exception_handler($severity, $message, $filepath, $line)
 	}
 
 	return TRUE;	
-	
-	// Should we log the error?  No?  We're done...
-//	$config =& get_config();
-//	if ($config['log_threshold'] == 0)
-//	{
-//		return;
-//	}
-//
-//	$error->log_exception($severity, $message, $filepath, $line);
 }
-
-// Error Handler
-//function error_handler($errno, $errstr, $errfile, $errline) {
-//	global $config, $log;
-//	
-//	switch ($errno) {
-//		case E_NOTICE:
-//		case E_USER_NOTICE:
-//			$error = 'Notice';
-//			break;
-//		case E_WARNING:
-//		case E_USER_WARNING:
-//			$error = 'Warning';
-//			break;
-//		case E_ERROR:
-//		case E_USER_ERROR:
-//			$error = 'Fatal Error';
-//			break;
-//		default:
-//			$error = 'Unknown';
-//			break;
-//	}
-//		
-//	if ($config->get('config_error_display')) {
-//		echo '<b>' . $error . '</b>: ' . $errstr . ' in <b>' . $errfile . '</b> on line <b>' . $errline . '</b>';
-//	}
-//	
-//	if ($config->get('config_error_log')) {
-//		$log->write('PHP ' . $error . ':  ' . $errstr . ' in ' . $errfile . ' on line ' . $errline);
-//	}
-//
-//	return TRUE;
-//}
-//
-//// Error Handler
-//set_error_handler('error_handler');
 
 function ip_address()
 {
@@ -1069,17 +868,8 @@ if ( ! function_exists('str2url'))
 		$str = str_replace("--","-",$str);
 		$str = trim($str, $sperator);
 		return strtolower($str);
-		
-// 		$str = mb_strtolower($str,'utf-8');
-// 		$str  = textToVN($str);
-// 		$str = preg_replace('/[^0-9a-z\.]/is',' ',$str);
-// 		$str = trim($str);
-// 		$str = preg_replace('/\s+/','-',$str);
-// 		return str_replace(' ','-',$str);
 	}
 }
-
-
 
 if ( ! function_exists('textToVN'))
 {
@@ -1239,7 +1029,6 @@ if ( ! function_exists('parse_server_uri'))
 		$_SERVER['URL_ROUTER'] = ($prefix_slash ? '/' : '').str_replace(array('//', '../'), '/', trim($uri, '/'));
 		// Do some final cleaning of the URI and return it
 		return $_SERVER['URL_ROUTER'];
-// 		return ($prefix_slash ? '/' : '').str_replace(array('//', '../'), '/', trim($uri, '/'));
 	}
 }
 

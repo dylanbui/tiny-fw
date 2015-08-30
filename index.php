@@ -29,7 +29,7 @@ try
 	define ('__UPLOAD_DATA_URL', __PUBLIC_HTML . 'data/upload/');
 	
 	define ('__DATA_PATH', __SITE_PATH . '/public_html/data/');
-	define ('__DATA_URL', __PUBLIC_HTML . 'data/');	
+	define ('__DATA_URL', __PUBLIC_HTML . 'data/');
 
 // 	$const = get_defined_constants(true);
 // 	echo "<pre>";
@@ -44,8 +44,8 @@ try
 	
 	require __SITE_PATH . '/admin/startup.php';
 	
-	// Load URI
-	parse_server_uri();
+	$oBenchmark = new Benchmark();
+	$oBenchmark->mark('code_start');	
 	
 	// Load facebook api
 	require __SITE_PATH . '/lib/facebookapi/facebook.php';	
@@ -70,10 +70,6 @@ try
 	// Config
 	$registry->oConfig = $config; 
 	
-	// Parameter	
-// 	$parameter = new Parameter();
-// 	$registry->oParams = $parameter;
-	
 	// Input
 	$input = new Input();
 	$registry->oInput = $input;	
@@ -97,31 +93,17 @@ try
 	*/
 	if ($config->config_values['application']['enable_seo_url'])
 		$front->addPreRequest(new Request('common/seo-url/index'));
-
-// 	// Loop through the route array looking for wild-cards
-// 	$routes = $config->config_values['routes'];//array();	
-// 	$uri = trim($_SERVER['URL_ROUTER'],'/');
-// 	foreach ($routes as $key => $val)
-// 	{
-// 		// Convert wild-cards to RegEx
-// 		$key = str_replace(':any', '.+', str_replace(':num', '[0-9]+', $key));
-	
-// 		// Does the RegEx match?
-// 		if (preg_match('#^'.$key.'$#', $uri))
-// 		{
-// 			// Do we have a back-reference?
-// 			if (strpos($val, '$') !== FALSE AND strpos($key, '(') !== FALSE)
-// 			{
-// 				$val = preg_replace('#^'.$key.'$#', $val, $uri);
-// 			}
-// 			$_SERVER['URL_ROUTER'] = $val;
-// 		}
-// 	}
 	
 	$front->dispatch();
 	
 	// Output
-	$response->output();	
+	$response->output();
+
+	if($config->config_values['application']['show_benchmark'])
+	{
+		$oBenchmark->mark('code_end');
+		echo "<br>".$oBenchmark->elapsed_time('code_start', 'code_end');
+	}	
 }
 catch(MvcException $e)
 {

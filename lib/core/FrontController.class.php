@@ -27,40 +27,14 @@ class FrontController
 
 	private function __construct()
 	{
-		
+		// Load URI
+		parse_server_uri();		
 	}
 	
 	public function addPreRequest($pre_request) 
 	{
 		$this->pre_request[] = $pre_request;
 	}
-	
-// 	public function dispatch()
-// 	{
-// // 		$request = new Request($_SERVER['QUERY_STRING']);
-// 		$request = new Request($this->getUri());		
-		
-// 		$this->_registry->oRequest = $request;
-		
-// 		$this->_module = $request->getModule(); 
-// 		$this->_controller = $request->getController(); 
-// 		$this->_action = $request->getAction(); 
-		
-// 		foreach ($this->pre_request as $pre_request) 
-// 		{
-// 			$result = Module::run($pre_request);
-					
-// 			if ($result) 
-// 			{
-// 				$request = $result;
-// 				break;
-// 			}
-// 		}
-			
-// 		while ($request) {
-// 			$request = Module::run($request);
-// 		}
-// 	}
 
 	private function loadPreRouter()
 	{
@@ -107,7 +81,6 @@ class FrontController
 		
 		if (is_null($request)) 
 		{
-// 			$request = new Request($_SERVER['URL_ROUTER']);
 			$request = $this->getCurrentRequest();
 			
 			$this->_registry->oRequest = $request;

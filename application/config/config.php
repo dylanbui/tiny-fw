@@ -13,6 +13,7 @@ $config['application']['language'] 					= "en";
 $config['application']['timezone'] 					= "Asia/Ho_Chi_Minh";
 $config['application']['currency'] 					= "USD";
 $config['application']['config_compression'] 		= 0; //; config_compression = 0 -> 9
+$config['application']['show_benchmark']			= TRUE;
 $config['application']['enable_seo_url'] 			= TRUE;
 
 // --- -------------------------------------------------------------------------------------------------- ---//
