@@ -1,4 +1,4 @@
-<?php  
+<?php  if ( ! defined('__SITE_PATH')) exit('No direct script access allowed');  
 
 define('_TB_PREFIX', $config->config_values['database_master']['db_prefix']);
 

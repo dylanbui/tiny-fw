@@ -43,20 +43,16 @@ class FrontController
 		$uri = trim($_SERVER['URL_ROUTER'],'/');
 		foreach ($routes as $key => $val)
 		{
-			// Convert wild-cards to RegEx
-			$key = str_replace(':any', '.+', str_replace(':num', '[0-9]+', $key));
-		
+			// Convert wildcards to RegEx
+			$key = str_replace(array(':any', ':num'), array('.+', '[0-9]+'), $key);			
 			// Does the RegEx match?
-			if (preg_match('#^'.$key.'$#', $uri))
+			if (preg_match('#^'.$key.'$#', $uri, $matches))
 			{
-				preg_match('#^'.$key.'$#', $uri, $data);
-				
 				// Do we have a back-reference?
 				if (strpos($val, '$') !== FALSE AND strpos($key, '(') !== FALSE)
 				{
 					$val = preg_replace('#^'.$key.'$#', $val, $uri);
 				}
-				
 				$_SERVER['URL_ROUTER'] = $val;
 			}
 		}

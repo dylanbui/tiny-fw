@@ -5,7 +5,6 @@
  */
 class MvcException extends Exception 
 {
-	var $action;
 	var $severity;
 	var $message;
 	var $filename;
@@ -155,6 +154,4 @@ class MvcException extends Exception
 
 }
 // END Exceptions Class
-
 /* End of file Exceptions.php */
-/* Location: ./system/libraries/Exceptions.php */

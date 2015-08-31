@@ -20,11 +20,6 @@ class Module
 		$class  = $request->getClass();
 		$method = $request->getMethod();
 		$args   = $request->getArgs();
-
-// 		$front = FrontController::getInstance();
-// 		$registry = $front->getRegistry();
-// 		$registry->oRequest = $request;
-// 		$front->setRegistry($registry);
 		
 		if (file_exists($file)) 
 		{		
