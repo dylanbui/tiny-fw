@@ -405,7 +405,6 @@
 		                                    </thead>
 		                                    <tbody>
 		                                        <tr>
-		                                        <tr>
 		                                            <td>
 		                                            	<label class="checkbox"><input type="checkbox" name="main_cat_image[image][choose]" <?php echo check_or_select_input($arrMainCatImage['image']['choose']); ?> value="1">Image</label>
                                           			</td>
@@ -438,7 +437,8 @@
 		                                            <td style="text-align:center;">
 		                                            	<input type="checkbox" name="main_cat_image[image_thumb][required]" <?php echo check_or_select_input($arrMainCatImage['image_thumb']['required']); ?> value="1">
 		                                            </td>		                                            
-		                                        </tr>		                                        	
+		                                        </tr>
+                                                <tr>
 		                                            <td>
 		                                            	<label class="checkbox"><input type="checkbox" name="main_cat_image[icon][choose]" <?php echo check_or_select_input($arrMainCatImage['icon']['choose']); ?> value="1">Icon</label>
                                           			</td>
@@ -455,9 +455,9 @@
 		                                            	<input type="checkbox" name="main_cat_image[icon][required]" <?php echo check_or_select_input($arrMainCatImage['icon']['required']); ?> value="1">
 		                                            </td>
 		                                        </tr>
+                                            </tbody>
 		                                </table>		                                		                                
-		                                
-		                                
+
 		                                <p><label class="checkbox"><input type="checkbox" name="ln_cat_image[choose]" <?php echo check_or_select_input($arrLnCatImage['choose']); ?> value="1"><b>Category Language Image</b></label></p>                                        
 										<table class="table fill-head">
 		                                    <thead>

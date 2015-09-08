@@ -53,7 +53,7 @@ final class Session
 		//Set the params
 		$config = Config::getInstance();
 		
-		foreach (array('match_ip', 'match_fingerprint', 'match_token', 'session_name', 'cookie_path', 'cookie_domain', 'cookie_secure', 'cookie_httponly', 'regenerate', 'expiration', 'session_database', 'table_name', 'primary_key') as $key)
+		foreach (array('match_ip', 'match_fingerprint', 'match_token', 'session_name', 'cookie_path', 'cookie_domain', 'cookie_secure', 'cookie_httponly', 'regenerate', 'expiration', 'gc_probability', 'session_database', 'table_name', 'primary_key') as $key)
 		{
 			$this->$key = (isset($params[$key])) ? $params[$key] : $config->config_values['session'][$key];
 		}		
@@ -159,7 +159,6 @@ final class Session
 		//If we should verify user agent fingerprints (and this one doesn't match!)
 		elseif($this->match_fingerprint && $_SESSION['fingerprint'] != $this->generate_fingerprint()) 
 		{
-			// - Loi fingerprint voi cac Browse khac nhau
 			return FALSE;
 		}
 
@@ -175,6 +174,7 @@ final class Session
 
 		//Set the users IP Address
 		$_SESSION['ip_address'] = ip_address();
+
 
 		//If a token was given for this session to match
 		if($this->match_token) 
@@ -245,13 +245,13 @@ final class Session
 	function generate_fingerprint()  
 	{
 		//We don't use the ip-adress, because it is subject to change in most cases
-// 		foreach(array('USER_AGENT', 'ACCEPT_CHARSET', 'ACCEPT_ENCODING', 'ACCEPT_LANGUAGE') as $name) {
-// 			$key[] = empty($_SERVER['HTTP_'. $name]) ? '' : $_SERVER['HTTP_'. $name];
+// 		foreach(array('ACCEPT_CHARSET', 'ACCEPT_ENCODING', 'ACCEPT_LANGUAGE', 'USER_AGENT') as $name) {
+// 			$key[] = empty($_SERVER['HTTP_'. $name]) ? NULL : $_SERVER['HTTP_'. $name];
 // 		}
 // 		//Create an MD5 has and return it
-// 		return md5(implode("/0", $key));
+// 		return md5(implode("\0", $key));
 		$secure_word = 'a39ccdef11305d5999dbccddcf4';
-		return md5($secure_word.$_SERVER['HTTP_USER_AGENT']);
+		return md5($secure_word.$_SERVER['HTTP_USER_AGENT']);		
 	}
 
 
