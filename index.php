@@ -91,6 +91,9 @@ try
 	$front->addPreRequest(new Request('run/first/action')); 
 	$front->addPreRequest(new Request('run/second/action'));
 	*/
+
+    $front->addPreRequest(new Request('common/seo-url/load-user'));
+
 	if ($config->config_values['application']['enable_seo_url'])
 		$front->addPreRequest(new Request('common/seo-url/index'));
 	
