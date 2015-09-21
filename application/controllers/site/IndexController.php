@@ -6,14 +6,14 @@ class Site_IndexController extends BaseController
 	public function __construct()
 	{
 		parent::__construct();
-		$this->oView->title = 'Welcome to Bui Van Tien Duc MVC';		
+//		$this->oView->title = 'Welcome to Bui Van Tien Duc MVC';
 	}
 
 	public function indexAction() 
 	{
 //		$_SESSION['test'] = 12;
 		$this->oSession->userdata['test'] = 12;
-	    $this->oView->title = 'Welcome to Bui Van Tien Duc MVC';
+//	    $this->oView->title = 'Welcome to Bui Van Tien Duc MVC';
 	    $this->renderView('site/home/index');
 	}
 	
@@ -53,8 +53,29 @@ class Site_IndexController extends BaseController
 		
 		
 	}
-	
-	
+
+    public function session1Action()
+    {
+        $this->oSession->userdata['session_1'] = "gia tri session 1";
+
+        echo "<pre>";
+        print_r($this->oSession->userdata);
+        echo "</pre>";
+        exit();
+    }
+
+    public function session2Action()
+    {
+
+        echo "In ra gia tri";
+
+        echo "<pre>";
+        print_r($this->oSession->userdata['session_1']);
+        echo "</pre>";
+        exit();
+    }
+
+
 	public function testAction() 
 	{
 		$arr[] = "thong---tin|| cong; ty";
@@ -107,6 +128,19 @@ class Site_IndexController extends BaseController
  
 
 	}
+
+    public function siteRenderHeaderAction($my_title)
+    {
+        $this->oView->my_title = $my_title;
+        return $this->oView->fetch('site/index/site_render_header');
+    }
+
+    public function siteRenderFooterAction()
+    {
+        return $this->oView->fetch('site/index/site_render_footer');
+    }
+
+
 	
 	
 }

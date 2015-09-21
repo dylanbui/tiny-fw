@@ -53,7 +53,7 @@ $config['session']['cookie_httponly'] 				= NULL;
 $config['session']['regenerate'] 					= 300;
 $config['session']['expiration'] 					= 7200;
 $config['session']['gc_probability'] 				= 100;
-$config['session']['session_database'] 				= TRUE;
+$config['session']['session_database'] 				= FALSE;
 $config['session']['table_name'] 					= $config['database_master']['db_prefix']."sessions";
 $config['session']['primary_key'] 					= "session_id";
 

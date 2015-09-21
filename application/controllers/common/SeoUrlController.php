@@ -16,6 +16,15 @@ Class Common_SeoUrlController Extends BaseController
 // 		exit();
 		
 	}
+
+    public function loadUserAction()
+    {
+        $this->oView->current_my_user = array(
+            'name' => 'Bui Van Tien Duc',
+            'email' => 'tienduc@email.com'
+        );
+    }
+
 	
 	public function firstAction()
 	{

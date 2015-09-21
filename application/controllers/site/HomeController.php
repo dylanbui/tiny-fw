@@ -172,6 +172,15 @@ class Site_HomeController extends BaseController
 	public function childSecondAction($title)
 	{
 		return "Thong tin load tu childSecondAction - title : " . $title;
-	}	
+	}
+
+    public function siteRenderAction()
+    {
+        $this->oView->file_title = 'siteRenderAction';
+        $this->oView->title = 'Title truyen vao cac trang con';
+        $this->renderView('site/home/site_render');
+    }
+
+
 
 }
