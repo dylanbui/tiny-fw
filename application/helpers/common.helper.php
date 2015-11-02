@@ -95,6 +95,13 @@ function mysql_to_unix_timestamp($date)
 	return strtotime($date);
 }
 
+function string_to_datetime($str_date, $str_format)
+{
+    // PHP 5.3 and up
+    $myDateTime = DateTime::createFromFormat($str_format, $str_date);
+    return $myDateTime->getTimestamp();
+}
+
 /**
 * Determines if the current version of PHP is greater then the supplied value
 *
