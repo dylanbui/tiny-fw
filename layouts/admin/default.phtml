@@ -212,9 +212,10 @@
         <div class="container-fluid" id="main-container">
         
         	<!-- BEGIN Sidebar -->        
-				<?php echo Module::run(new Request('home/dashboard/render-left-nav')); ?>
+                <?php //echo Module::run(new Request('home/dashboard/render-left-nav')); ?>
+                <?php echo (new Request('home/dashboard/render-left-nav'))->run(); ?>
             <!-- END Sidebar -->
-            
+
             
             <!-- BEGIN Content -->
             <div id="main-content">

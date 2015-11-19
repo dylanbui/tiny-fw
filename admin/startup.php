@@ -18,7 +18,7 @@
 	require __HELPER_PATH . '/common.helper.php';
     
 	require __SITE_PATH . '/lib/core/FrontController.class.php';
-	require __SITE_PATH . '/lib/core/Module.class.php';
+//	require __SITE_PATH . '/lib/core/Module.class.php';
 	require __SITE_PATH . '/lib/core/BaseController.class.php';
 	require __SITE_PATH . '/lib/core/Request.class.php';
 	require __SITE_PATH . '/lib/core/Response.class.php';

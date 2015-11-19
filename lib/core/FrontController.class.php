@@ -66,7 +66,8 @@ class FrontController
 		$request = NULL;
 		foreach ($this->pre_request as $pre_request)
 		{
-			$result = Module::run($pre_request);
+//			$result = Module::run($pre_request);
+            $result = $pre_request->run();
 				
 			if ($result)
 			{
@@ -87,7 +88,8 @@ class FrontController
 		}
 		
 		while ($request) {
-			$request = Module::run($request);
+//			$request = Module::run($request);
+            $request = $request->run();
 		}
 		
 	}

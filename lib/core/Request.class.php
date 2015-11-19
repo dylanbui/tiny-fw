@@ -149,5 +149,45 @@ final class Request
 		}
 		return $clear_args;
 	}
+
+    public function run()
+    {
+        $file   = $this->getFile();
+        $class  = $this->getClass();
+        $method = $this->getMethod();
+        $args   = $this->getArgs();
+
+        if (file_exists($file))
+        {
+            require_once($file);
+
+            $rc = new ReflectionClass($class);
+            // if the controller exists and implements IController
+//			if($rc->implementsInterface('IController'))
+            if($rc->isSubclassOf('BaseController'))
+            {
+                try {
+                    $controller = $rc->newInstance();
+                    $classMethod = $rc->getMethod($method);
+                    return $classMethod->invokeArgs($controller,$args);
+                }
+                catch (ReflectionException $e)
+                {
+                    throw new MvcException($e->getMessage());
+                }
+            }
+            else
+            {
+//				throw new MvcException("Interface iController must be implemented");
+                throw new MvcException("abstract class BaseController must be extended");
+            }
+        }
+        else
+        {
+            throw new MvcException("Controller file not found");
+        }
+    }
+
+
 }
 ?>
