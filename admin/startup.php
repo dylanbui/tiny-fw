@@ -25,6 +25,7 @@
 	require __SITE_PATH . '/lib/core/View.class.php';
 	require __SITE_PATH . '/lib/core/Registry.class.php';
 	require __SITE_PATH . '/lib/core/MvcException.class.php';
+    require __SITE_PATH . '/lib/core/database/Db.class.php';
 	require __SITE_PATH . '/lib/core/Model.class.php'; /* Kieu ket noi don gian */
 	require __SITE_PATH . '/lib/core/Benchmark.class.php';
 	

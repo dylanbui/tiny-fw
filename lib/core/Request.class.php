@@ -150,6 +150,19 @@ final class Request
 		return $clear_args;
 	}
 
+    // -- Fixed DucBui : 24/11/2015  --
+    public static function staticRun($request)
+    {
+        if(!$request instanceof Request)
+            $request = new Request($request);
+
+        $returnVal = $request->run();
+        while ($returnVal instanceof Request)
+            $returnVal = $returnVal->run();
+
+        return $returnVal;
+    }
+
     public function run()
     {
         $file   = $this->getFile();

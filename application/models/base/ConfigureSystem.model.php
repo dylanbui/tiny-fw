@@ -107,11 +107,9 @@ class Base_ConfigureSystem extends Base_BaseModel
 			$data[$row['code']] = $row['value'];
 		}
 	
-		$result = $this->query("SELECT * FROM ".TB_LANGUAGE." WHERE active = 1 ORDER BY sort_order DESC");
-		$result = $result->fetchAll(PDO::FETCH_ASSOC);
-	
+		$result = $this->runQuery("SELECT * FROM ".TB_LANGUAGE." WHERE active = 1 ORDER BY sort_order DESC");
+
 		$config_langs = array();
-	
 		$languages = array();
 		foreach ($result as $row)
 		{
@@ -129,7 +127,7 @@ class Base_ConfigureSystem extends Base_BaseModel
 			$config_langs['single_lang'] = 0;
 	
 		$data['configure_languages'] = $config_langs;
-	
+
 		return $data;
 	}	
 		

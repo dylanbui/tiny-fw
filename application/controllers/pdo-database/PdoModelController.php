@@ -24,7 +24,10 @@ Class PdoDatabase_PdoModelController Extends BaseController
 	    
 		$rs = $users->getRowSet(NULL,array(),'user_id DESC',$offset,$items_per_page);
 		$total = $users->getTotalRow();
-		
+
+//        $users->showDebug(true);
+//        exit;
+
 	    $pages = new Paginator();
 	    $pages->current_url = site_url('pdo-database/pdo-model/pdo-model/%d');
 	    $pages->offset = $offset;
@@ -146,15 +149,52 @@ Class PdoDatabase_PdoModelController Extends BaseController
 	
 		$users = new Ex_Users();
 		$row = $users->get($id);
-	
+
 		if(empty($row))
 			redirect('pdo-database/pdo-model/pdo-model');
 	
 		$this->oView->data = $row;
 	
 		$this->renderView('pdo-database/pdo-model/_form_view');
-	}	
-	
+	}
+
+    public function pdoShowAnyAction()
+    {
+        $this->oView->title = 'Model View Form';
+
+        $users = new Ex_Users();
+
+        $row = $users->getRow('first_name = ? OR email = ?', array('honh kong', 'tienduc2002vn@yahoo.com'));
+
+        echo "<pre>";
+        print_r($row);
+        echo "</pre>";
+
+        $rows = $users->getRowset('first_name = ? OR email = ?', array('honh kong', 'tienduc2002vn@yahoo.com'));
+
+        echo "<pre>";
+        print_r($rows);
+        echo "</pre>";
+
+        $users->setActiveField(999827871);
+
+        $users->showDebug(true);
+        exit;
+
+        if(empty($row)) {
+            echo "<pre>";
+            print_r('Khong co hang');
+            echo "</pre>";
+            exit();
+            redirect('pdo-database/pdo-model/pdo-model');
+        }
+
+        $this->oView->data = $row;
+
+        $this->renderView('pdo-database/pdo-model/_form_view');
+    }
+
+
 }
 
 ?>

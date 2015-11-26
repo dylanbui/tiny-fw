@@ -126,7 +126,8 @@ class Site_HomeController extends BaseController
 	{
 		$this->oSession->userdata['c'] = 2000;
 		$this->oView->title_aaa = 'Day la trang dung chuc nang renderAction --- '.$this->oSession->userdata['test'];
-		$this->oView->part_render = Module::run(new Request('site/home/part-render',array('Title duoc truyen vao '.$this->oSession->userdata['c'])));
+//		$this->oView->part_render = Module::run(new Request('site/home/part-render',array('Title duoc truyen vao '.$this->oSession->userdata['c'])));
+        $this->oView->part_render = Request::staticRun(new Request('site/home/part-render',array('Title duoc truyen vao '.$this->oSession->userdata['c'])));
 //		$this->oView->part_render = Module::run('site/home/part-render/buivantienduc');		
 		$this->renderView('site/home/render');
 	}

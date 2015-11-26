@@ -57,7 +57,9 @@ abstract class BaseController implements IController
 		
 		foreach ($this->_children as $child) {
 			$param_name = str_replace("-", "_", $child->getAction());
-			$this->oView->{$param_name} = Module::run($child);
+            // -- Fixed DucBui : 24/11/2015  --
+//			$this->oView->{$param_name} = Module::run($child);
+            $this->oView->{$param_name} = Request::staticRun($child);
 		}		
 
 		$this->oView->main_content = $this->oView->fetch($path);

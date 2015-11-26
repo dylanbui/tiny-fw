@@ -13,7 +13,11 @@
 
 RENDER lai 1 lan nua trong code template
 
-<?= Module::run(new Request('site/home/part-render',array('Title duoc truyen vao AGAIN')));?>
+<? //Module::run(new Request('site/home/part-render',array('Title duoc truyen vao AGAIN')));?>
+
+<?= Request::staticRun(new Request('site/home/part-render',array('Title duoc truyen vao AGAIN')));?>
+
+
 
 
 

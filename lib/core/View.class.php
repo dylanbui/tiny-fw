@@ -127,11 +127,18 @@ class View
 		{
 			show_error('View not found in '. $path);
 		}
-		
-		if(!empty($args))
-			$this->variables = array_merge($this->variables,$args);
-		
-		$output = $this->getOutput($path,$this->variables);
+
+        // -- Fixed DucBui : 24/11/2015  --
+//		if(!empty($args))
+//			$this->variables = array_merge($this->variables,$args);
+//		$output = $this->getOutput($path,$this->variables);
+
+        $variables = $this->variables;
+        if(!empty($args))
+            $variables = array_merge($variables,$args);
+
+        $output = $this->getOutput($path,$variables);
+
 		return isset($output) ? $output : false;
 	}
 	

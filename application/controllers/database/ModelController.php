@@ -12,11 +12,11 @@ Class Database_ModelController Extends BaseController
 	{
 	    $this->oView->title = 'Normal Database MVC';
 	    
-	    $db = DbConnection::getInstance();
+	    $db = Db::getInstance();
 	    
 		// Get one row
-	    $row = $db->query("SELECT count(user_id) As Total FROM ".TB_EX_USER)->fetch();
-	    
+	    $row = $db->selectOneRow("SELECT count(user_id) As Total FROM ".TB_EX_USER);
+
 	    $items_per_page = 15;
 	    $offset = ($offset % $items_per_page != 0 ? 0 : $offset);
 	    $rs = $db->query("SELECT * FROM ".TB_EX_USER." ORDER BY user_id DESC limit {$offset},{$items_per_page} ");
@@ -43,8 +43,8 @@ Class Database_ModelController Extends BaseController
 	
 	public function deleteAction($id)
 	{
-	    $db = DbConnection::getInstance();
-	    $row = $db->query("SELECT * FROM ".TB_EX_USER." WHERE user_id = " . $id)->fetch();
+	    $db = Db::getInstance();
+	    $row = $db->selectOneRow("SELECT * FROM ".TB_EX_USER." WHERE user_id = " . $id);
 	    if(!empty($row))
 	    {
 			$db->query("DELETE FROM ".TB_EX_USER." WHERE user_id = " . $id);
@@ -73,41 +73,37 @@ Class Database_ModelController Extends BaseController
 		
 		if(!empty($_POST))
 		{
-			
-			$str = $_POST['first_name'];
-			
-			$str = '"'.$str.'"';
-			
-			
-			$a = array('a' => 'Apple' ,'b' => 'banana' , 'c' => 'Coconut');
-			
-			//serialize the array
-			$s = var_export($a , true);
-			
-			$s = $_POST['first_name'];
-			
-			echo $s;
-			//strin is >> array ( 'a' => 'Apple', 'b' => 'banana', 'c' => 'Coconut', )
-			
-			echo '<br /><br />';
-			
-			//unserialize
-			eval('$my_var=' . $s . ';');
-			
-			print_r($my_var);
-
-			exit();
-			
-			
-// 			$str = "'foo'=>'bar'";
-			
-			eval("\$arr = array({$str});");
-			
-			echo "<pre>";
-			print_r($arr);
-			echo "</pre>";
-			exit();
-			exit();
+//			$str = $_POST['first_name'];
+//			$str = '"'.$str.'"';
+//			$a = array('a' => 'Apple' ,'b' => 'banana' , 'c' => 'Coconut');
+//
+//			//serialize the array
+//			$s = var_export($a , true);
+//
+//			$s = $_POST['first_name'];
+//
+//			echo $s;
+//			//strin is >> array ( 'a' => 'Apple', 'b' => 'banana', 'c' => 'Coconut', )
+//
+//			echo '<br /><br />';
+//
+//			//unserialize
+//			eval('$my_var=' . $s . ';');
+//
+//			print_r($my_var);
+//
+//			exit();
+//
+//
+//// 			$str = "'foo'=>'bar'";
+//
+//			eval("\$arr = array({$str});");
+//
+//			echo "<pre>";
+//			print_r($arr);
+//			echo "</pre>";
+//			exit();
+//			exit();
 			
 			
 			
@@ -129,15 +125,24 @@ Class Database_ModelController Extends BaseController
 // 			echo "</pre>";
 // 			exit();
 			
-			echo "<pre>";
-			print_r($this->eval_input_data($_POST['first_name']));
-			echo "</pre>";
-			exit();
-				
-			
-			$sql = "INSERT INTO ".TB_EX_USER."(first_name,last_name,email,address) VALUES('{$_POST['first_name']}','{$_POST['last_name']}','{$_POST['email']}','{$_POST['address']}')";	
-	    	$db = DbConnection::getInstance();
-	    	$db->query($sql);
+//			echo "<pre>";
+//			print_r($this->eval_input_data($_POST['first_name']));
+//			echo "</pre>";
+//			exit();
+
+
+//			$sql = "INSERT INTO ".TB_EX_USER."(first_name,last_name,email,address) VALUES('{$_POST['first_name']}','{$_POST['last_name']}','{$_POST['email']}','{$_POST['address']}')";
+	    	$db = Db::getInstance();
+//	    	$db->query($sql);
+
+            $sql = "INSERT INTO ".TB_EX_USER."(first_name,last_name,email,address) VALUES(:first_name,:last_name,:email,:address)";
+            $params = array(':first_name' => $_POST['first_name']
+                            ,':last_name' => $_POST['last_name']
+                            ,':email' => $_POST['email']
+                            ,':address' => $_POST['address']);
+
+            $val = $db->insert($sql, $params);
+
 			redirect('database/model/index');
 		}
 		
@@ -146,10 +151,10 @@ Class Database_ModelController Extends BaseController
 	
 	public function editAction($id)
 	{
-		$db = DbConnection::getInstance();
+		$db = Db::getInstance();
 		$this->oView->title = 'Normal Edit Form';
 		$this->oView->link = site_url('database/model/edit/' . $id);
-	    $row = $db->query("SELECT * FROM ".TB_EX_USER." WHERE user_id = " . $id)->fetch();
+	    $row = $db->selectOneRow("SELECT * FROM ".TB_EX_USER." WHERE user_id = " . $id);
 		
 	    if(empty($row))
 	    	redirect('database/model/index');

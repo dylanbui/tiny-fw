@@ -130,7 +130,8 @@ final class Session
 	        );
 	        
 			// Create connect to database	        
-	        $this->_pdo = DbConnection::getInstance();
+//	        $this->_pdo = DbConnection::getInstance();
+            $this->_pdo = Db::getInstance();
 		}
 		
 		// Start the session!
@@ -290,9 +291,8 @@ final class Session
 		$time = date('Y-m-d H:i:s', time() - $this->expiration);
 		
 		//Select the session
-		$row = $this->_pdo->query("SELECT * FROM {$this->table_name} WHERE {$this->primary_key} = '{$id}' AND last_activity > '{$time}' ")->fetch();		
-		
-		return (!empty($row)) ? $row['data'] : '';
+		$row = $this->_pdo->query("SELECT * FROM {$this->table_name} WHERE {$this->primary_key} = '{$id}' AND last_activity > '{$time}' ");
+		return (!empty($row)) ? $row[0]['data'] : '';
 	}
 
 	/**

@@ -20,7 +20,7 @@ $config['application']['enable_seo_url'] 			= TRUE;
 // --- -------------------------------------------------------------------------------------------------- ---//
 // --- MASTER DATABASE ---//
 
-$config['database_master']['db_type'] 				= "mysql";
+$config['database_master']['db_driver'] 			= "pdo"; // mysqli
 $config['database_master']['db_hostname'] 			= "localhost";
 $config['database_master']['db_name'] 				= "z-cms";
 $config['database_master']['db_username'] 			= "root";
@@ -31,7 +31,7 @@ $config['database_master']['db_prefix'] 			= "z__";
 // --- -------------------------------------------------------------------------------------------------- ---//
 // --- SLAVE DATABASE ---//
 
-$config['database_slave']['db_type'] 				= "mysql";
+$config['database_slave']['db_driver'] 				= "pdo"; // mysqli
 $config['database_slave']['db_hostname'] 			= "localhost";
 $config['database_slave']['db_name'] 				= "none-db";
 $config['database_slave']['db_username'] 			= "root";
@@ -53,7 +53,7 @@ $config['session']['cookie_httponly'] 				= NULL;
 $config['session']['regenerate'] 					= 300;
 $config['session']['expiration'] 					= 7200;
 $config['session']['gc_probability'] 				= 100;
-$config['session']['session_database'] 				= FALSE;
+$config['session']['session_database'] 				= TRUE; //FALSE;
 $config['session']['table_name'] 					= $config['database_master']['db_prefix']."sessions";
 $config['session']['primary_key'] 					= "session_id";
 
