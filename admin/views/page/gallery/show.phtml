@@ -47,16 +47,18 @@
 	</div>
 	<div class="modal-footer">
 		<a id="modal-form-cancel" class="btn" data-dismiss="modal" aria-hidden="true" href="#">Cancel</a>
-		<a id="modal-form-delete" class="btn btn-danger" data-dismiss="modal" href="#">Delete</a>										
+		<a id="modal-form-delete" class="btn btn-danger" data-dismiss="modal" href="#" onclick="javascript:buttonDeleteAction();">Delete</a>
 	</div>
 </div>                        
                         
-<script>
+<script type="text/javascript">
+
+var numberImages = <?= $numberImages; ?>;
 
 function closeIframe()
 {
-	// Truy cap vao gia tri cua parent window
-	//parent.$("#number_image").text(12);
+    // -- Truy cap vao gia tri cua parent window --
+	parent.$(".number_image").text(parseInt(numberImages));
 	parent.$.fancybox.close();	
 }
 
@@ -68,7 +70,6 @@ $(document).ready(function () {
 		allowedTypes:"jpg,png,gif",
 		fileName: "file_upload",
 		multiple: true,
-		
 		showStatusAfterSuccess:false,
 		showAbort:false,
 		showDone:false,
@@ -76,48 +77,71 @@ $(document).ready(function () {
 			
 		onSuccess:function(files,data,xhr)
 		{
-			console.debug(data);
+//			console.debug(data);
 			$('#sortable').append(data);
 			//$("a[rel^='prettyPhoto']").prettyPhoto();
 			jQuery("a[rel^='prettyPhoto']").prettyPhoto({
 			    social_tools: false,
 			    show_title: true /* true/false */
-			});			
-//			$("#status").html("<font color='green'>Upload is success</font>");
-			
+			});
+            // -- Tang so luong hinh anh --
+            numberImages++;
+            console.log(numberImages);
 		},
 		onError: function(files,status,errMsg)
 		{		
 			$("#status").html("<font color='red'>Upload is Failed</font>");
 		}
 	}
-
 	$("#mulitplefileuploader").uploadFile(settings);
 
     $('#sortable').sortable({
-    	
         stop: function (event, ui) {
             //$( "#sortable" ).disableSelection();
             $("#sortable").unbind("click");        	
 	        var oData = $(this).sortable('serialize');
             console.debug(oData);
-            
-            $.ajax({
-				data: oData,
-                type: 'POST',
-                url: '<?php echo site_url('page/gallery/sort-order'); ?>',
-                success: function(msg){
-                    console.debug(msg);
-                },
-                error:function(){
-                    alert("failure");
-                }                
-            });
+            sortImage(oData);
 		}
     });
 
     
 });
+
+function buttonDeleteAction()
+{
+    var image_id = $('#myDeleteConfirmModal').data('image_id');
+    var url = $('#myDeleteConfirmModal').data('url');
+    $.ajax({
+        type: 'GET',
+        url: url,
+        success: function(msg){
+            console.debug(msg);
+            $('#'+image_id).remove();
+            // -- Giam so luong hinh anh --
+            numberImages--;
+            sortImage($('#sortable').sortable('serialize'));
+        },
+        error:function(){
+            alert("failure");
+        }
+    });
+}
+
+function sortImage(oData)
+{
+    $.ajax({
+        data: oData,
+        type: 'POST',
+        url: '<?php echo site_url('page/gallery/sort-order'); ?>',
+        success: function(msg){
+            console.debug(msg);
+        },
+        error:function(){
+            alert("failure");
+        }
+    });
+}
 
 </script>                        
                         

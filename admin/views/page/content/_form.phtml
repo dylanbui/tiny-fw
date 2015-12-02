@@ -30,7 +30,7 @@
 			<?php if (df($arrGalleryField['use_gallery'],0) == 1 && $page_action == 'update')  : ?>
             	<div class="pull-left btn-toolbar">
 					<a href=# onclick="openGalleryWindow('<?php echo $gallery_link; ?>')" class="btn btn-primary">
-						<i class="icon-picture"></i> Gallery Image (<span id='number_image'><?php echo $totalGalItem; ?></span>)
+						<i class="icon-picture"></i> Gallery Image (<span class='number_image' id='number_image'><?php echo $totalGalItem; ?></span>)
 					</a>
 		 		</div>
 			<?php endif ; ?>
@@ -142,7 +142,8 @@
 						                                	if (df($arrLnImage['image']['choose'],0) == 1) :
 						                                		$required = "default";
 							                                	$required_text = "";
-						                                		if (df($arrLnImage['image']['required'],0) == 1)
+						                                		if (df($arrLnImage['image']['required'],0) == 1
+                                                                    && is_null(df($dataContent['ln_field'][$code]['ln_image'], NULL))) // Edit hinh anh
 						                                		{
 					                                				$required .= " required";
 					                                				$required_text = "<span class='red'> (*) </span>";
@@ -180,7 +181,8 @@
 						                                	if (df($arrLnImage['icon']['choose'],0) == 1) :
 							                                	$required = "default";
 							                                	$required_text = "";
-							                                	if (df($arrLnImage['icon']['required'],0) == 1)
+							                                	if (df($arrLnImage['icon']['required'],0) == 1
+                                                                    && is_null(df($dataContent['ln_field'][$code]['ln_icon'], NULL))) // Edit icon
 							                                	{
 							                                		$required .= " required";
 							                                		$required_text = "<span class='red'> (*) </span>";
@@ -226,7 +228,8 @@
 	                                	if (df($arrMainImage['image']['choose'],0) == 1) :
 		                                	$required = "default";
 		                                	$required_text = "";
-		                                	if (df($arrMainImage['image']['required'],0) == 1)
+		                                	if (df($arrMainImage['image']['required'],0) == 1
+                                                && is_null(df($dataContent['main_field']['image'], NULL))) // Edit main image
 		                                	{
 		                                		$required .= " required";
 		                                		$required_text = "<span class='red'> (*) </span>";
@@ -264,7 +267,8 @@
 	                                	if (df($arrMainImage['icon']['choose'],0) == 1) :
 		                                	$required = "default";
 		                                	$required_text = "";
-		                                	if (df($arrMainImage['icon']['required'],0) == 1)
+		                                	if (df($arrMainImage['icon']['required'],0) == 1
+                                                && is_null(df($dataContent['main_field']['icon'], NULL))) // Edit main icon
 		                                	{
 		                                		$required .= " required";
 		                                		$required_text = "<span class='red'> (*) </span>";
@@ -296,9 +300,9 @@
                                 		endif;
                                 	endif; 
                                 ?>                                
-                                    
-                                
-                                <?php if (df($arrGalleryField['use_gallery'],0) == 1 && $page_action == 'add')  : ?>    
+
+                                <?php if (df($arrGalleryField['use_gallery'],0) == 1 && $page_action == 'add')  : ?>
+                                <!-- Upload for gallery   -->
                                 <div class="control-group">
                                 	<label class="control-label">
                                 		Upload Multi Image Gallery
@@ -318,8 +322,7 @@
                                     </div>
                                 </div>                                    
 								<?php endif; ?>
-                                
-                                
+
                                 <div class="control-group">
                                 	<label class="control-label text-info">Sort Order</label>
                                     <div class="controls">
@@ -348,7 +351,7 @@
 			<?php if (df($arrGalleryField['use_gallery'],0) == 1 && $page_action == 'update')  : ?>
             	<div class="pull-left btn-toolbar">
 					<a href=# onclick="openGalleryWindow('<?php echo $gallery_link; ?>')" class="btn btn-primary">
-						<i class="icon-picture"></i> Gallery Image (<span id='number_image'><?php echo $totalGalItem; ?></span>)
+						<i class="icon-picture"></i> Gallery Image (<span class='number_image' id='number_image'><?php echo $totalGalItem; ?></span>)
 					</a>
 		 		</div>
 			<?php endif ; ?>                                    

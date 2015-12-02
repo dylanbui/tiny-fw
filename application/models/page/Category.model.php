@@ -39,12 +39,8 @@ class Page_Category extends Model
 		foreach ($rs as $row)
 		{
 			$rowCat = $this->get($row['path_id']);
-			
 			$sql = "SELECT ci.* FROM ".TB_PAGE_CATEGORY_LN." as ci WHERE ci.id = ? AND ci.ln = ? LIMIT 0,1";
-			
-			$sth = $this->query($sql, array($row['path_id'], $default_language));
-			$oneRow =	$sth->fetch(PDO::FETCH_ASSOC);
-			
+            $oneRow = $this->runQueryGetFirstRow($sql, array($row['path_id'], $default_language));
 			$data[] = array_merge($rowCat, $oneRow);
 		}
 		
@@ -66,9 +62,7 @@ class Page_Category extends Model
 		
 		$sql .= " ORDER BY `sort_order` ASC";		
 		
-		$sth = $this->query($sql, array($page_id ,$parent_id ,$default_language));
-		
-		$rsSubMenu = $sth->fetchAll(PDO::FETCH_ASSOC);
+        $rsSubMenu = $this->runQuery($sql, array($page_id ,$parent_id ,$default_language));
 		
 		foreach ($rsSubMenu as $row)
 		{
@@ -93,8 +87,7 @@ class Page_Category extends Model
 		$sql .= " WHERE pr.page_id = ? AND pr.parent_id = 0 AND ci.ln = ? AND pr.active = 1";
 		$sql .= " ORDER BY `sort_order` ASC";
 		
-		$sth = $this->query($sql, array($page_id ,$cfg_languages['default_lang']));
-		$rsSubMenu = $sth->fetchAll(PDO::FETCH_ASSOC);				
+        $rsSubMenu = $this->runQuery($sql, array($page_id ,$cfg_languages['default_lang']));
 		
 		$counter = 1;
 		$padding = 20*$counter;
@@ -126,8 +119,7 @@ class Page_Category extends Model
 		$sql .= " WHERE pr.parent_id = ? AND ci.ln = ? AND pr.active = 1";
 		$sql .= " ORDER BY `sort_order` ASC";
 		
-		$sth = $this->query($sql, array($rowMenu['id'] ,$cfg_languages['default_lang']));
-		$rsSubMenu = $sth->fetchAll(PDO::FETCH_ASSOC);		
+        $rsSubMenu = $this->runQuery($sql, array($rowMenu['id'] ,$cfg_languages['default_lang']));
 		
 		foreach ($rsSubMenu as $row)
 		{
@@ -150,20 +142,14 @@ class Page_Category extends Model
 		$sql .= " ON pr.id = ci.id ";
 		$sql .= " WHERE pr.parent_id = ? AND ci.ln = ? ";
 		$sql .= " ORDER BY `sort_order` ASC";
-		
-		$sth = $this->query($sql, array($parent_id, $ln_code));
-		
-		return $sth->fetchAll(PDO::FETCH_ASSOC);		
+        return $this->runQuery($sql, array($parent_id, $ln_code));
 	}
 	
 	function getRowDataCategory($cat_id)
 	{
 		$rowCat = $this->get($cat_id);
-	
 		$sql = "SELECT ci.* FROM ".TB_PAGE_CATEGORY_LN." as ci WHERE ci.id = ?";
-	
-		$sth = $this->query($sql, array($cat_id));
-		$arr =	$sth->fetchAll(PDO::FETCH_ASSOC);
+        $arr = $this->runQuery($sql, array($cat_id));
 		
 		$rowLnCat = array();
 		foreach ($arr as $row)
@@ -198,6 +184,7 @@ class Page_Category extends Model
 	
 		$this->_table_name = TB_PAGE_CATEGORY_LN;
 		$objUrlAlias = new Base_UrlAlias();
+        // -- Foreach with languages --
 		foreach ($arrLnField as $ln => $arrData)
 		{
 			// --- Create SLUG name ---//
@@ -243,7 +230,7 @@ class Page_Category extends Model
 			if (!empty($arrData['name']) && $enable_seo_url == 1)
 			{
 				$slug_title = str2url($arrData['name']); // Tao slug name
-				$objUrlAlias->replaceUrlAlias(array("query"=>'page_cat_id='.$cat_id.'&page_ln='.$ln, "keyword"=>$slug_title));				
+				$objUrlAlias->replaceUrlAlias(array("query"=>'page_cat_id='.$cat_id.'&page_ln='.$ln, "keyword"=>$slug_title));
 			}
 			// --------------------------
 						
@@ -253,7 +240,6 @@ class Page_Category extends Model
 		
 		// --- Update Category Path ---//		
 		$objCatPath = new Page_CategoryPath();
-// 		$objCatPath->insertCatPath($arrMainField['parent_id'], $cat_id);
 		$objCatPath->updateCatPath($arrMainField['parent_id'], $cat_id);
 		// ------------------------		
 	}
@@ -276,13 +262,11 @@ class Page_Category extends Model
 				
 			case 'ln-image':
 				$sql = "SELECT ci.* FROM ".TB_PAGE_CATEGORY_LN." as ci WHERE ci.id = ? AND ci.ln = ?";
-				$sth = $this->query($sql, array($cat_id, $ln_code));
-				$arr =	$sth->fetchAll(PDO::FETCH_ASSOC);
-				
-				if(empty($arr[0]))
-					break;
-				$row = $arr[0];
-				
+
+                $row = $this->runQueryGetFirstRow($sql, array($cat_id, $ln_code));
+                if (empty($row))
+                    break;
+
 				@unlink(__UPLOAD_DATA_PATH.$row['ln_image']);
 				@unlink(__UPLOAD_DATA_PATH.'thumb_'.$row['ln_image']);
 				
@@ -293,13 +277,11 @@ class Page_Category extends Model
 					
 			case 'ln-icon':
 				$sql = "SELECT ci.* FROM ".TB_PAGE_CATEGORY_LN." as ci WHERE ci.id = ? AND ci.ln = ?";
-				$sth = $this->query($sql, array($cat_id, $ln_code));
-				$arr =	$sth->fetchAll(PDO::FETCH_ASSOC);
-				
-				if(empty($arr[0]))
-					break;
-				$row = $arr[0];
-				
+
+                $row = $this->runQueryGetFirstRow($sql, array($cat_id, $ln_code));
+                if (empty($row))
+                    break;
+
 				@unlink(__UPLOAD_DATA_PATH.$row['ln_icon']);
 				
 				$this->_table_name = TB_PAGE_CATEGORY_LN;
@@ -316,27 +298,25 @@ class Page_Category extends Model
 	
 	function deleteCategory($cat_id)
 	{
-		if($cat_id != 0)
-		{
-			// --- Delete child cat ---//
-			$rs = $this->getRowset('parent_id = ?', array($cat_id));
-			foreach ($rs as $row)
-				$this->deleteCategory($row['id']);
-			
-			// --- Delete current cat content---//			
-			$objContent = new Page_Content();
-			$rsContent = $objContent->getRowset("cat_id = ?", array($cat_id));
-			foreach ($rsContent as $row)
-				$objContent->deleteContent($row['id']);			 
+        // TODO : Delete cat image and content image
+        // --- Delete child cat ---//
+        $rs = $this->getRowset('parent_id = ?', array($cat_id));
+        foreach ($rs as $row)
+            $this->deleteCategory($row['id']);
 
-			// --- Delete current cat ln ---//
-			$sql = "DELETE FROM ".TB_PAGE_CATEGORY_LN;
-			$sql .= " WHERE id = ?";
-			$this->query($sql, array($cat_id));
-			
-			// --- Delete current cat ln ---//			
-			$this->delete($cat_id);
-		}
+        // --- Delete current cat content---//
+        $objContent = new Page_Content();
+        $rsContent = $objContent->getRowset("cat_id = ?", array($cat_id));
+        foreach ($rsContent as $row)
+            $objContent->deleteContent($row['id']);
+
+        // --- Delete current cat ln ---//
+        $sql = "DELETE FROM ".TB_PAGE_CATEGORY_LN;
+        $sql .= " WHERE id = ?";
+        $this->runQuery($sql, array($cat_id));
+
+        // --- Delete current cat ln ---//
+        $this->delete($cat_id);
 	}
 	
 	
@@ -357,48 +337,7 @@ class Page_Category extends Model
 		foreach ($rs as $row)
 			$this->recur_activeCategory($row['id'], $value);
 	}
-	
-// 	public function insert($values)
-// 	{
-// 		// 		$data = $values;
-// 		// 		unset($values['slug_title']);
-// 		$last_id = parent::insert($values);
-	
-// 		if (!empty($values['name']))
-// 		{
-// 			$slug_title = $values['name']; // Tao slug name
-// 			$this->replaceUrlAlias($last_id, $slug_title);
-// 		}
-	
-// 		$objCatPath = new Ex_ContentCatsPath();
-// 		$objCatPath->insertCatPath($data['parent_id'], $last_id);
-	
-// 		return $last_id;
-// 	}
-	
-// 	public function update($id, $values)
-// 	{
-// 		$data = $values;
-// 		unset($values['slug_title']);
-// 		$result = parent::update($id, $values);
-	
-// 		if (!empty($data['slug_title'])) {
-// 			$this->replaceUrlAlias($id, $data['slug_title']);
-// 		}
-	
-// 		$objCatPath = new Ex_ContentCatsPath();
-// 		$objCatPath->insertCatPath($data['parent_id'], $id);
-	
-// 		return $result;
-// 	}
-	
-// 	private function replaceUrlAlias($id ,$ln ,$slug_title)
-// 	{
-// 		$objUrlAlias = new Base_UrlAlias();
-// 		$objUrlAlias->replaceUrlAlias(array("query"=>'page_cat_id='.$id.'&page_ln='.$ln, "keyword"=>$slug_title));
-// 	}
-	
-	
+
 	
 }
 

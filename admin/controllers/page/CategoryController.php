@@ -21,7 +21,7 @@ class Page_CategoryController extends BaseController
 		parent::__construct();
 		$this->_confLn = $this->oConfigureSystem['configure_languages'];
 		$this->oView->configure_languages = $this->_confLn;
-				
+
 		$this->_arrCatMainField = $this->_arrCatLnField = $this->_arrCatMainImage = $this->_arrCatLnImage = array();
 		
 		$this->_cfg_upload_file = array();
@@ -227,7 +227,7 @@ class Page_CategoryController extends BaseController
 		redirect('page/category/list/'.$page_code);
 	}
 	
-	public function deleteImageAction($action, $page_id, $cat_id, $ln_code = NULL)
+	public function deleteImageAction($action, $page_code, $cat_id, $ln_code = NULL)
 	{
 		$objCategory = new Page_Category();
 		$row = $objCategory->get($cat_id);
@@ -240,7 +240,7 @@ class Page_CategoryController extends BaseController
 		}
 		
 		$objCategory->deleteImage($action, $cat_id, $ln_code);
-		redirect("page/category/update/{$page_id}/{$cat_id}");
+		redirect("page/category/update/{$page_code}/{$cat_id}");
 	}
 	
 	private function _loadConfigPage($page_code)

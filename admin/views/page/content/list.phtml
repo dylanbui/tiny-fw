@@ -72,19 +72,10 @@ function displaySubMenu($page_code ,$rsSubMenuCats ,$counter)
                             </div>
                             
                             <div class="box-content">
-                            
 	                            <?php
-	                            	$view = new View();
-	                            	$view->rsContent = $rsContent;
-	                            	$view->update_link = $update_link;
-	                            	$view->active_link = $active_link;
-	                            	$view->delete_link = $delete_link;
-	                            	$view->pages = $pages;
-	                            	
-// 	                            	echo $view->fetch('page/content/display-table-content');
-	                            	echo $view->fetch($rowPageConf['display_template_file']);
+// 	                            	echo $this->fetch('page/content/display-table-content');
+	                            	echo $this->fetch($rowPageConf['display_template_file']);
 	                            ?>
-                            
                             </div>
                             
                         </div>

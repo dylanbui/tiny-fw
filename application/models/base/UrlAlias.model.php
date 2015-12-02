@@ -13,14 +13,12 @@ class Base_UrlAlias extends Base_BaseModel
 	public function replaceUrlAlias($data)
 	{
 		$row = $this->getRow('query = ?',array($data['query']));
-		if (empty($row)) 
+		if (empty($row))
 			$this->insert($data);
 		else
 			$this->updateWithCondition("query = ?", array($data['query']), array("keyword"=>$data['keyword']));
 	}
-	
-	
-	
+
 	
 }
 

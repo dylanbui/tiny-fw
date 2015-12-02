@@ -213,11 +213,8 @@ function load_define_input($arrConf ,$name ,$value = "" ,$css = "")
 			if (!is_null($where_condition))
 				$sql .= " WHERE $where_condition ";
 						
-			$db = DbConnection::getInstance();
-			$sth = $db->prepare($sql);
-			$sth->execute();
-			$rs = $sth->fetchAll(PDO::FETCH_ASSOC);
-			
+            $rs = Db::getInstance()->query($sql);
+
 			foreach ($rs as $row)
 			{
 				$checked = "";
@@ -254,10 +251,7 @@ function load_define_input($arrConf ,$name ,$value = "" ,$css = "")
 			if (!is_null($where_condition))
 				$sql .= " AND $where_condition ";
 				
-			$db = DbConnection::getInstance();
-			$sth = $db->prepare($sql);
-			$sth->execute();
-			$rs = $sth->fetchAll(PDO::FETCH_ASSOC);
+            $rs = Db::getInstance()->query($sql);
 				
 			foreach ($rs as $row)
 			{

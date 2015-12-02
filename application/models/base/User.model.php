@@ -10,12 +10,6 @@ class Base_User extends Model
 		parent::__construct();
 	}
 
-//     public function checkLogin($username, $password)
-//     {
-//     	$row = $this->getRow('username = ? AND password = ?',array($username,$password));
-//     	return $row;
-//     }
-
 	public function isAdmin($str_group_id)
 	{
 		$objGroup = new Base_Group();
@@ -31,13 +25,6 @@ class Base_User extends Model
 		return FALSE;		
 	}
 
-    public function getAllUser()
-    {
-    	$sql = "SELECT * FROM ".TB_USER;
-    	$result = $this->query($sql);
-    	return $result->fetchAll();
-    }
-	
 }
 
 ?>

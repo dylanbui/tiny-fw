@@ -867,7 +867,7 @@ function word_limiter($str, $limit = 100, $end_char = '&#8230;')
 function create_uniqid($random_id_length = 10)
 {
 	//generate a random id encrypt it and store it in $rnd_id
-	$rnd_id = crypt(uniqid(rand(),1));
+	$rnd_id = crypt(uniqid(rand(),1), 'abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ');
 	
 	//to remove any slashes that might have come
 	$rnd_id = strip_tags(stripslashes($rnd_id));

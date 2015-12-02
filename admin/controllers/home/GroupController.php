@@ -33,13 +33,13 @@ class Home_GroupController extends BaseController
 				$permissions[] = $permission;
 			}
 		}
-		
+
+		// -- Show debug permissions --
 		echo "<pre>";
 		print_r($permissions);
 		echo "</pre>";
 		exit();
-		
-	}	
+	}
 
 	
 	public function listAction() 
@@ -116,10 +116,10 @@ class Home_GroupController extends BaseController
 		if ($this->oInput->isPost())
 		{
 			$group_name = $this->oInput->post('group_name','');
-			// Khong cho thay doi role
-				
+            // -- Khong cho thay doi role --
 			$permission = $this->oInput->post('permission',NULL);
 			$is_admin = $this->oInput->post('is_admin','0');
+            $active = $this->oInput->post('active','0');
 				
 			// TODO : Check validate
 			if ($permission == NULL)
@@ -133,6 +133,7 @@ class Home_GroupController extends BaseController
 					"group_name" => $group_name,
 					"level" => $this->oInput->post('level','0'),
 					"is_admin" => $is_admin,
+                    "active" => $active,
 					"acl_resources" => $permission
 			);
 
@@ -156,8 +157,7 @@ class Home_GroupController extends BaseController
 		
 		$this->oView->rowGroup = $rowGroup;
 		$this->oView->arrAclResources = unserialize($rowGroup['acl_resources']);
-		
-		
+
 		$this->renderView('home/group/_form');
 	}
 	
@@ -168,7 +168,7 @@ class Home_GroupController extends BaseController
 				
 		// TODO : Check validate
 		$objGroup = new Base_Group();
-		$rowGroup = $objGroup->setActiveField($group_id);
+		$objGroup->setActiveField($group_id);
 		redirect("home/group/list");
 	}
 	

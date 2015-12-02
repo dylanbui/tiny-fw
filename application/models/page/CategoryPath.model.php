@@ -68,7 +68,7 @@ class Page_CategoryPath extends Model
 				$level = 0;
 				foreach ($path as $path_id) 
 				{
-					$this->query("REPLACE INTO `" . TB_PAGE_CATEGORY_PATH . "` SET cat_id = '" . (int)$category_path['cat_id'] . "', `path_id` = '" . (int)$path_id . "', level = '" . (int)$level . "'");
+					$this->runQuery("REPLACE INTO `" . TB_PAGE_CATEGORY_PATH . "` SET cat_id = '" . (int)$category_path['cat_id'] . "', `path_id` = '" . (int)$path_id . "', level = '" . (int)$level . "'");
 					$level++;
 				}
 			}
@@ -78,6 +78,7 @@ class Page_CategoryPath extends Model
 			$this->deleteWithCondition("cat_id = ?", array($cat_id));
 			
 			$rs = $this->getRowset("cat_id = ?",array($parent_id),"`level` ASC");
+            $level = 0;
 			foreach ($rs as $result)
 			{
 				$data['cat_id'] = $cat_id;
@@ -87,7 +88,7 @@ class Page_CategoryPath extends Model
 				$level++;
 			}
 			
-			$this->query("REPLACE INTO `" . TB_PAGE_CATEGORY_PATH . "` SET cat_id = '" . (int)$cat_id . "', `path_id` = '" . (int)$cat_id . "', level = '" . (int)$level . "'");
+			$this->runQuery("REPLACE INTO `" . TB_PAGE_CATEGORY_PATH . "` SET cat_id = '" . (int)$cat_id . "', `path_id` = '" . (int)$cat_id . "', level = '" . (int)$level . "'");
 		}		
 		
 	}	

@@ -41,6 +41,7 @@ class Page_GalleryController extends BaseController
 		}
 		
 		$this->oView->strHtml = $strHtml;
+        $this->oView->numberImages = count($rsGaImgs);
 		$this->renderView('page/gallery/show', "admin/layout_iframe");
 	}
 	
@@ -84,7 +85,16 @@ class Page_GalleryController extends BaseController
 		
 		redirect("page/gallery/show/{$page_id}/{$content_id}");
 	}
-	
+
+    public function deleteAjaxImageAction($page_id, $content_id, $gallery_id)
+    {
+        // TODO : Validate Params
+        $objGallery = new Page_Gallery();
+        $objGallery->deleteImageGallery($gallery_id);
+        echo "Done";
+        exit();
+    }
+
 	public function sortOrderAction()
 	{
 		if($this->oInput->isPost())

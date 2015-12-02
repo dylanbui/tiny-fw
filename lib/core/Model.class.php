@@ -173,7 +173,7 @@ abstract class Model
         $row = $this->_conn->selectOneRow($sql, array(':id' => $id));
         // -- Run fast more than get($id) --
         $act = ($row['active'] == 1 ? 0 : 1);
-        $this->update($id, array('active' => $act));
+        return $this->update($id, array('active' => $act));
     }
 
 	/**

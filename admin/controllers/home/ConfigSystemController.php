@@ -51,10 +51,6 @@ class Home_ConfigSystemController extends BaseController
 		
 		if ($this->oInput->isPost()) 
 		{
-// 			$config['database_master']['db_type'] 				= "mysql";
-// 			$config['database_master']['db_hostname'] 			= "localhost";
-			
-			$db_type = $this->oConfig->config_values['database_master']['db_type'];
 			$hostname = $this->oConfig->config_values['database_master']['db_hostname'];
 			$database = $this->oConfig->config_values['database_master']['db_name'];
 			$username = $this->oConfig->config_values['database_master']['db_username'];
@@ -65,7 +61,7 @@ class Home_ConfigSystemController extends BaseController
 			$dumpSettings['compress'] = $this->oInput->post('backup_type');
 			
 			try {
-				$dump = new MysqlDump($database, $username, $password, $hostname, $db_type, $dumpSettings, array());
+				$dump = new MysqlDump($database, $username, $password, $hostname, "mysql", $dumpSettings, array());
 				$dump->start(__SITE_PATH.'/sql/backup_'.$time.'_mysql.sql');
 			} catch (Exception $e) {
 				echo 'mysqldump-php error: ' . $e->getMessage();
@@ -100,36 +96,19 @@ class Home_ConfigSystemController extends BaseController
 		
 		#Now restore from the .sql file
 		$command = "mysql --user={$username} --password={$password} --database={$database} < ".$restore_file;
-		
-// 		echo "<pre>";
-// 		print_r($command);
-// 		echo "</pre>";
-// 		exit();
-		
 		exec($command);
-		
-// 		echo "<pre>";
-// 		print_r('khong lam gi ca');
-// 		echo "</pre>";
-// 		exit();
-		
+
 		redirect('home/config-system/backup-db');
 	}
-	
-	
+
 	public function deleteDbAction($filename)
 	{
 		unlink(__SITE_PATH.'/sql/'.$filename);
 		redirect('home/config-system/backup-db');
 	}
-	
-	
+
 	public function dumpDbAction()
 	{
-		// 		$config['database_master']['db_name'] 				= "7up-haisan";
-		// 		$config['database_master']['db_username'] 			= "root";
-		// 		$config['database_master']['db_password'] 			= "sofresh123";
-	
 		$database = $this->oConfig->config_values['database_master']['db_name'];
 		$username = $this->oConfig->config_values['database_master']['db_username'];
 		$password = $this->oConfig->config_values['database_master']['db_password'];
@@ -147,7 +126,6 @@ class Home_ConfigSystemController extends BaseController
 		print_r("Xonggggg");
 		echo "</pre>";
 		exit();
-	
 	}
 	
 	public function runCommanderAction()

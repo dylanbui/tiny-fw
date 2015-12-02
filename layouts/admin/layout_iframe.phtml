@@ -50,13 +50,17 @@
                 
                 <!-- BEGIN Delete Modal Content -->
 				<script type="text/javascript">
-					function confimDelete(url)
+					function confimDeleteModal(data)
 					{
+                        if(typeof data === 'object') {
+                            $('#myDeleteConfirmModal').data(data);
+                        }
+                        else {
+                            $('#modal-form-delete').bind('click', function(e){
+                                window.location.href = data;
+                            });
+                        }
 						$('#myDeleteConfirmModal').modal('toggle');
-						$('#modal-form-delete').bind('click', function(e){
-							window.location.href = url;
-						  });
-						
 					}
 				</script>
 				<!-- END Delete Modal Content -->                

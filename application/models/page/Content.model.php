@@ -80,10 +80,7 @@ class Page_Content extends Page_BaseModel
 	
 		return $rowPageConf;
 	}
-	
-	// ---  ---//	
-	
-// 	function getListDisplay($page_id, $ln_code, $offset = 0, $items_per_page = 0, $order_by = NULL)
+
 	function getListDisplay($page_id, $ln_code, $cat_id, $offset = 0, $items_per_page = 0, $order_by = NULL)	
 	{
 		$sql = "SELECT pr.id ,pr.uniqid ,pr.visited ,pr.active ,pr.sort_order ,pr.last_update ,ci.name FROM ".TB_PAGE_CONTENT. " as pr INNER JOIN ".TB_PAGE_CONTENT_LN." as ci ";
@@ -103,9 +100,7 @@ class Page_Content extends Page_BaseModel
 		if ($items_per_page > 0)
 			$sql .= " LIMIT {$offset},{$items_per_page}";
 		
-		$sth = $this->query($sql, $params);
-		
-		return $sth->fetchAll(PDO::FETCH_ASSOC);
+		return $this->runQuery($sql, $params);
 	}
 	
 	function getRowContent($content_id, $ln_code)
@@ -113,28 +108,24 @@ class Page_Content extends Page_BaseModel
 		$sql = "SELECT pr.* ,ci.* FROM ".TB_PAGE_CONTENT. " as pr INNER JOIN ".TB_PAGE_CONTENT_LN." as ci ";
 		$sql .= " ON pr.id = ci.id ";
 		$sql .= " WHERE pr.id = ? AND ci.ln = ?";
-	
-		$sth = $this->query($sql, array($content_id, $ln_code));
-		$arr =	$sth->fetchAll(PDO::FETCH_ASSOC);
-		
-		return !empty($arr) ? $arr[0] : NULL;
+        return $this->runQueryGetFirstRow($sql, array($content_id, $ln_code));
 	}
 	
 	function getRowDataContent($content_id)
 	{
 		$rowContent = $this->get($content_id);
+        if (empty($rowContent))
+            return null;
 		
 		$sql = "SELECT ci.* FROM ".TB_PAGE_CONTENT_LN." as ci WHERE ci.id = ?";
-	
-		$sth = $this->query($sql, array($content_id));
-		$arr =	$sth->fetchAll(PDO::FETCH_ASSOC);
+        $arr = $this->runQuery($sql, array($content_id));
+        if (empty($arr))
+            return null;
 		
 		$rowLnContent = array();
 		foreach ($arr as $row)
-		{
 			$rowLnContent["{$row['ln']}"] = $row;
-		}
-		
+
 		$data = array();
 		$data['main_field'] = $rowContent;
 		$data['ln_field'] = $rowLnContent;
@@ -220,20 +211,14 @@ class Page_Content extends Page_BaseModel
 	{
 		$sql = "DELETE * FROM ".TB_PAGE_CONTENT_LN;
 		$sql .= " WHERE id = ?";
-		
-		$sth = $this->query($sql, array($content_id));
 
+        // -- Delete slave records --
+		$sth = $this->runQuery($sql, array($content_id));
+
+        // -- Delete master records --
 		return $this->delete($content_id);
 	}
-	
-// 	private function replaceUrlAlias($id ,$ln ,$slug_title)
-// 	{
-// 		$objUrlAlias = new Base_UrlAlias();
-// 		$objUrlAlias->replaceUrlAlias(array("query"=>'page_content_id='.$id.'&page_ln='.$ln, "keyword"=>$slug_title));
-// 	}
-	
-	
-	
+
 }
 
 ?>

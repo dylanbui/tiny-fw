@@ -49,10 +49,7 @@ try
  	$config = NULL;
 	
 	require __SITE_PATH . '/admin/startup.php';
-	
-	// Load URI
-	parse_server_uri();	
-	
+
 	$config->config_values['application']['default_uri'] = "common/home/login";
 	
  	/*** a new registry object ***/

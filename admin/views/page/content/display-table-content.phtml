@@ -25,9 +25,9 @@
                                             <td><?php echo $rowContent['last_update']; ?></td>
                                             <td style="text-align: center">
                                             <?php if ($rowContent['active'] == 1) : ?>
-                                            	<a href='<?php echo $active_link.'/'.$rowContent['id'].'/'.$pages->offset; ?>' title='Active' class='btn btn-circle btn-lime'><i class="icon-ok-sign"></i></a>
+                                            	<a href='<?php echo $active_link.'/'.$rowContent['id'].'/'.$oPaginator->offset; ?>' title='Active' class='btn btn-circle btn-lime'><i class="icon-ok-sign"></i></a>
                                             <?php else : ?>
-                                            	<a href='<?php echo $active_link.'/'.$rowContent['id'].'/'.$pages->offset; ?>' title='UnActive' class='btn btn-circle btn-gray'><i class="icon-remove-circle"></i></a>
+                                            	<a href='<?php echo $active_link.'/'.$rowContent['id'].'/'.$oPaginator->offset; ?>' title='UnActive' class='btn btn-circle btn-gray'><i class="icon-remove-circle"></i></a>
                                             <?php endif; ?>                                            
                                             </td>
                                             <td style="text-align: center">
@@ -41,7 +41,7 @@
                                 
 								<div class="pagination text-right">
 								<?php
-									echo $pages->display_pages();
+									echo $oPaginator->display_pages();
 								?>
 	                            </div>                                
                                 

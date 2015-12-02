@@ -6,7 +6,7 @@
 		<a href="<?php echo __UPLOAD_GALLERY_URL.$image; ?>" rel="prettyPhoto[pp_gal]" title="Description image">
 			<i class="icon-paper-clip"></i>
 		</a>		
-		<a href="javascript:confimDelete('<?php echo site_url("page/gallery/delete-image/{$page_id}/{$content_id}/$id"); ?>');">
+		<a href="javascript:confimDeleteModal({'image_id':'item-<?php echo $id; ?>','url':'<?php echo site_url("page/gallery/delete-ajax-image/{$page_id}/{$content_id}/$id"); ?>'});">
 			<i class="icon-trash"></i>
 		</a>
 	</div>

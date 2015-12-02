@@ -18,11 +18,8 @@ class Home_UserController extends BaseController
 	public function listAction() 
 	{
 		$objUser = new Base_User();
-		
-		$rsUsers = $objUser->getAllUser();
-		
-		$this->oView->rsUsers = $rsUsers;		
-		
+		$rsUsers = $objUser->getRowset();
+		$this->oView->rsUsers = $rsUsers;
 		$this->renderView('home/user/list');
 	}
 	
@@ -122,10 +119,21 @@ class Home_UserController extends BaseController
 	{
 		if (!$this->_isModify)
 			return $this->forward('common/error/error-deny');
-				
-		// TODO : Check validate $user_id
+
+        // -- Cannot delete current user --
+        $currentUser = $this->oAuth->currentUser();
+        if($user_id == $currentUser['id'])
+            redirect("home/user/list");
+
 		$oUser = new Base_User();
-		$oUser->delete($user_id);
+		$rowAffected = $oUser->delete($user_id);
+        if(!empty($rowAffected))
+            // TODO : Notify delete success
+            echo "success";
+        else
+            // TODO : Notify delete error
+            echo "error";
+
 		redirect("home/user/list");
 	}
 	
@@ -133,17 +141,10 @@ class Home_UserController extends BaseController
 	{
 		if (!$this->_isModify)
 			return $this->forward('common/error/error-deny');
-				
-		// TODO : Check validate $user_id
+
 		$oUser = new Base_User();
 		$oUser->setActiveField($user_id);
-		
-// 		$rowUser = $oUser->get($user_id);
-// 		$data = array(
-// 			"activated" => ($rowUser['activated'] == 0 ? 1 : 0)
-// 		);
 // 		// TODO : Notify save successfully
-// 		$oUser->update($user_id,$data);		
 		redirect("home/user/list");	
 	}	
 

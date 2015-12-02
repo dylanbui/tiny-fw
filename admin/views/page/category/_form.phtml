@@ -181,7 +181,7 @@
 					                                    	<?php if (!is_null(df($dataContent['ln_cat_field'][$code]['ln_image'],NULL))) : ?>
 					                                    		<br><br>
 					                                    		<img src="<?php echo __UPLOAD_DATA_URL.$dataContent['ln_cat_field'][$code]['ln_image']; ?>" width="100px;">
-					                                    		<a href="<?php echo site_url("page/category/delete-image/ln-image/{$rowPageConf['id']}/{$cat_id}/{$code}");?>">Delete</a>
+					                                    		<a href="<?php echo site_url("page/category/delete-image/ln-image/{$rowPageConf['code']}/{$cat_id}/{$code}");?>">Delete</a>
 					                                    	<?php endif; ?>					                                    						                                    	
 					                                    </div>
 					                                </div>                                
@@ -199,7 +199,7 @@
 					                                    	<?php if (!is_null(df($dataContent['ln_cat_field'][$code]['ln_icon'],NULL))) : ?>
 					                                    		<br><br>
 					                                    		<img src="<?php echo __UPLOAD_DATA_URL.$dataContent['ln_cat_field'][$code]['ln_icon']; ?>" width="100px;">
-					                                    		<a href="<?php echo site_url("page/category/delete-image/ln-icon/{{$rowPageConf['id']}}/{$cat_id}/{$code}");?>">Delete</a>
+					                                    		<a href="<?php echo site_url("page/category/delete-image/ln-icon/{{$rowPageConf['code']}}/{$cat_id}/{$code}");?>">Delete</a>
 					                                    	<?php endif; ?>					                                    	
 					                                    </div>
 					                                </div>

@@ -88,15 +88,15 @@ class Page_ContentController extends BaseController
 		$rsContent = $this->_objPageContent->getListDisplay($page_id, $this->_confLn['default_lang'], $cat_id, $offset, $this->_items_per_page, "{$by} {$order}");
 		$this->oView->rsContent = $rsContent;
 		
-		$pages = new Paginator();
-		$pages->current_url = site_url("page/content/list/{$page_code}/{$cat_id}?offset=%d&by={$by}&order={$order}");
-		$pages->offset = $offset;
-		$pages->items_per_page = $this->_items_per_page;
-		$pages->items_total = $this->_objPageContent->getTotalRow();
-		$pages->mid_range = 7;
-		$pages->paginate();
-		
-		$this->oView->pages = $pages;		
+		$oPaginator = new Paginator();
+        $oPaginator->current_url = site_url("page/content/list/{$page_code}/{$cat_id}?offset=%d&by={$by}&order={$order}");
+        $oPaginator->offset = $offset;
+        $oPaginator->items_per_page = $this->_items_per_page;
+        $oPaginator->items_total = $this->_objPageContent->getTotalRow('page_id = ?', array($page_id));
+        $oPaginator->mid_range = 7;
+        $oPaginator->paginate();
+
+		$this->oView->oPaginator = $oPaginator;
 		
     	$this->renderView('page/content/list');
 	}
@@ -119,12 +119,12 @@ class Page_ContentController extends BaseController
 		$this->oView->arrMainDbFields = $this->_objPageConf->loadContentMainFields();
 		$this->oView->arrLnDbFields = $this->_objPageConf->loadContentLnFields();
 	
-		$arrMainField = $arrLnField = $arrMainImage = $arrLnImage = array();
-		
-		$intUseCategory = 0;
-		$arrMainCatField = $arrLnCatField = $arrMainCatImage = $arrLnCatImage = array();
-		
-		$arrGalleryField = array();
+//		$arrMainField = $arrLnField = $arrMainImage = $arrLnImage = array();
+//
+//		$intUseCategory = 0;
+//		$arrMainCatField = $arrLnCatField = $arrMainCatImage = $arrLnCatImage = array();
+//
+//		$arrGalleryField = array();
 		
 		$dataContent = array();
 		if(!empty($content_id))
@@ -137,8 +137,10 @@ class Page_ContentController extends BaseController
 			$this->oView->form_link = site_url("page/content/update/".$page_code."/".$content_id);
 			$this->oView->page_title = "Update record";
 			$this->oView->page_action = "update";
-			// TODO : Check $dataContent exsit
+			// Check $dataContent exsit
 			$dataContent = $this->_objPageContent->getRowDataContent($content_id);
+            if (empty($dataContent))
+                redirect(site_url("page/content/list/".$page_code));
 			
 		} else 
 		{
@@ -151,11 +153,6 @@ class Page_ContentController extends BaseController
 			$dataContent['main_field']['sort_order'] = '';
 			$dataContent['main_field']['active'] = 1;
 		}
-		
-// 		echo "<pre>";
-// 		print_r($dataContent);
-// 		echo "</pre>";
-// 		exit();
 
 		if(df($this->_rowPageConf['data']['use_category'], 0) == 1)
 		{
@@ -172,20 +169,33 @@ class Page_ContentController extends BaseController
 		$arrMainImage = $data['main_image'];
 		$arrLnImage = $data['ln_image'];
 		
-		$intUseCategory = $data['use_category'];
-		$arrMainCatField = $data['main_cat_field'];
-		$arrLnCatField = $data['ln_cat_field'];
-		$arrMainCatImage = $data['main_cat_image'];
-		$arrLnCatImage = $data['ln_cat_image'];		
+//		$intUseCategory = $data['use_category'];
+//		$arrMainCatField = $data['main_cat_field'];
+//		$arrLnCatField = $data['ln_cat_field'];
+//		$arrMainCatImage = $data['main_cat_image'];
+//		$arrLnCatImage = $data['ln_cat_image'];
 
 		$arrGalleryField = $data['gallery_image'];
 		
-		if ($this->oInput->isPost())
-		{
-			// Process upload data
-			$arrMainImageField = $this->_upload_main_image($arrMainImage);
-			$arrLnImageField = $this->_upload_ln_image($arrLnImage);
-			
+		if ($this->oInput->isPost()) {
+            // Process upload data
+            $arrMainImageField = $this->_upload_main_image($arrMainImage);
+            // -- Delete old image if upload data succes --
+            // -- Neu ton tai hinh anh up len thi xoa hinh anh cu --
+            foreach ($arrMainImageField as $key => $value) {
+                @unlink(__UPLOAD_DATA_PATH . $dataContent['main_field'][$key]);
+                @unlink(__UPLOAD_DATA_PATH . 'thumb_' . $dataContent['main_field'][$key]);
+            }
+
+            $arrLnImageField = $this->_upload_ln_image($arrLnImage);
+            // -- Neu ton tai hinh anh trong content language up len thi xoa hinh anh cu --
+            foreach ($arrLnImageField as $key => $valueArr) {
+                foreach ($valueArr as $field => $value) {
+                    @unlink(__UPLOAD_DATA_PATH . $dataContent['ln_field'][$key][$field]);
+                    @unlink(__UPLOAD_DATA_PATH . 'thumb_' . $dataContent['ln_field'][$key][$field]);
+                }
+            }
+
 			$arrMainField = $this->oInput->post('main_field');
 			$arrLnField = $this->oInput->post('ln_field');
 			
@@ -216,24 +226,16 @@ class Page_ContentController extends BaseController
 				// Insert data
 				$content_id = $this->_objPageContent->insertContent($this->_page_id, $arrMainField, $arrLnField);
 				
-				// TODO : Notify insert successfully !
+				// Notify insert successfully !
 				$this->oSession->set_flashdata('notify_msg',array('msg_title' => "Notify",
 						'msg_code' => "success",
 						'msg_content' => "Insert successfully !"));				
-				//redirect('page/content/add/'.$page_code);
-				
-			} else 
+			} else
 			{
 				// Update data
 				$this->_objPageContent->updateContent($content_id, $arrMainField, $arrLnField);
 				
-				// TODO : Delete old upload data
-// 				$dataContent['main_field']['image'];
-// 				$dataContent['main_field']['icon'];
-// 				$dataContent['ln_field'][$ln_code]['ln_image'];
-// 				$dataContent['ln_field'][$ln_code]['ln_icon'];
-				
-				// TODO : Notify update successfully !
+				// Notify update successfully !
 				$this->oSession->set_flashdata('notify_msg',array('msg_title' => "Notify",
 						'msg_code' => "success",
 						'msg_content' => "Update successfully !"));								
