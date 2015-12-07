@@ -8,7 +8,6 @@ class Page_Content extends Page_BaseModel
 	public $_ln_code;
 	
 	// --- Use for front end ---//
-	
 	function getListContentData($page_code, $cat_id = NULL, $offset = 0, $items_per_page = 0, $order_by = NULL)
 	{
 		$rowPageConf = $this->getPageRow($page_code);
@@ -23,38 +22,31 @@ class Page_Content extends Page_BaseModel
 	function insertContentData($page_code, $data)
 	{
 		$rowPageConf = $this->getPageRow($page_code);
-	
 		$arrMainField['sort_order'] = '';
 		$arrMainField['active'] = 1;
 		// 		$arrMainField['user_id'] = '';
-	
 		$arrLnField[$this->_ln_code] = $data;
 	
 		return $this->insertContent($rowPageConf['id'], $arrMainField ,$arrLnField);
-		// 		Array
-		// 		(
-		// 				[sort_order] =>
-		// 				[active] => 1
-		// 				[user_id] => 1
-		// 		)
-	
-		// 		LN
-	
-		// 		Array
-		// 		(
-		// 				[en] => Array
-		// 				(
-		// 						[name] => thieu nien
-		// 						[email] => thiennien@yahoo.com
-		// 						[phonenumber] => 0123456789
-		// 						[address] => 50 nhat tao
-		// 				)
-	
-		// 		)
-	
-	
-	
-	
+// 		Array
+// 		(
+// 				[sort_order] =>
+// 				[active] => 1
+// 				[user_id] => 1
+// 		)
+
+// 		LN
+
+// 		Array
+// 		(
+// 				[en] => Array
+// 				(
+// 						[name] => thieu nien
+// 						[email] => thiennien@yahoo.com
+// 						[phonenumber] => 0123456789
+// 						[address] => 50 nhat tao
+// 				)
+// 		)
 	}
 	
 	function updateContentData($content_id, $data)
@@ -66,6 +58,7 @@ class Page_Content extends Page_BaseModel
 	
 		$this->updateContent($content_id, $arrMainField ,$arrLnField);
 	}
+    // --- END : Use for front end ---//
 	
 	private function getPageRow($page_code)
 	{
@@ -209,16 +202,15 @@ class Page_Content extends Page_BaseModel
 	
 	function deleteContent($content_id)
 	{
-		$sql = "DELETE * FROM ".TB_PAGE_CONTENT_LN;
+        // -- Delete slave records --
+		$sql = "DELETE FROM ".TB_PAGE_CONTENT_LN;
 		$sql .= " WHERE id = ?";
 
-        // -- Delete slave records --
-		$sth = $this->runQuery($sql, array($content_id));
-
+		$this->runQuery($sql, array($content_id));
+//        echo $this->countAffected()
         // -- Delete master records --
 		return $this->delete($content_id);
 	}
-
 }
 
 ?>

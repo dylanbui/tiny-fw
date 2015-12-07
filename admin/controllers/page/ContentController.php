@@ -110,7 +110,7 @@ class Page_ContentController extends BaseController
 	{
 		$this->_loadConfigPage($page_code);
 		
-		// TODO : Check permission user
+		// Check permission user
 		if (!$this->_isModify)
 			return $this->forward('common/error/error-deny');
 		
@@ -118,14 +118,7 @@ class Page_ContentController extends BaseController
 	
 		$this->oView->arrMainDbFields = $this->_objPageConf->loadContentMainFields();
 		$this->oView->arrLnDbFields = $this->_objPageConf->loadContentLnFields();
-	
-//		$arrMainField = $arrLnField = $arrMainImage = $arrLnImage = array();
-//
-//		$intUseCategory = 0;
-//		$arrMainCatField = $arrLnCatField = $arrMainCatImage = $arrLnCatImage = array();
-//
-//		$arrGalleryField = array();
-		
+
 		$dataContent = array();
 		if(!empty($content_id))
 		{
@@ -168,12 +161,6 @@ class Page_ContentController extends BaseController
 		$arrLnField = $data['ln_field'];
 		$arrMainImage = $data['main_image'];
 		$arrLnImage = $data['ln_image'];
-		
-//		$intUseCategory = $data['use_category'];
-//		$arrMainCatField = $data['main_cat_field'];
-//		$arrLnCatField = $data['ln_cat_field'];
-//		$arrMainCatImage = $data['main_cat_image'];
-//		$arrLnCatImage = $data['ln_cat_image'];
 
 		$arrGalleryField = $data['gallery_image'];
 		
@@ -277,18 +264,25 @@ class Page_ContentController extends BaseController
 		// Load permission
 		$this->detectModifyPermission('page/content/'.$page_code);		
 		if (!$this->_isModify)
-			return $this->forward('common/error/error-deny');		
-		
-		$rowContent = $this->_objPageContent->getRow($content_id);
+			return $this->forward('common/error/error-deny');
+
+        $rowContent = $this->_objPageContent->getRowDataContent($content_id);
 		if (!empty($rowContent))
 		{
 			$result = $this->_objPageContent->deleteContent($content_id);
-			if ($result) 
+			if ($result)
 			{
-				// TODO : Delete image , get info from $rowContent
+				// Delete image , get info from $rowContent
+                @unlink(__UPLOAD_DATA_PATH.$rowContent['main_field']['icon']);
+                @unlink(__UPLOAD_DATA_PATH.$rowContent['main_field']['image']);
+                @unlink(__UPLOAD_DATA_PATH.'thumb_'.$rowContent['main_field']['image']);
+                foreach ($rowContent['ln_field'] as $ln => $value) {
+                    @unlink(__UPLOAD_DATA_PATH.$value['ln_icon']);
+                    @unlink(__UPLOAD_DATA_PATH.$value['ln_image']);
+                    @unlink(__UPLOAD_DATA_PATH.'thumb_'.$value['ln_image']);
+                }
 			}
 		}
-		
 		redirect('page/content/list/'.$page_code);
 	}
 
@@ -457,15 +451,7 @@ class Page_ContentController extends BaseController
 					print_r($imageLib->display_errors());
 					exit();
 				}
-					
-			}			
-			
-			// Thay doi chuc nang moi 17/01/2014
-// 			if ( ! $imageLib->resize())
-// 			{
-// 				echo $imageLib->display_errors();
-// 				exit();
-// 			}
+			}
 			// Thum image : $imageLib->thumb_marker.$imageLib->source_image
 		}
 	
@@ -507,13 +493,38 @@ class Page_ContentController extends BaseController
 			}
 				
 		}		
-		
-		// Thay doi chuc nang moi 17/01/2014
-// 		if ( ! $imageLib->resize())
-// 		{
-// 			echo $imageLib->display_errors();
-// 			exit();
-// 		}		
 	}
+
+    // TODO : Xoa nhung hinh anh khong co trong DB --
+    public function deleteContentImageAction($page_code)
+    {
+        $rowPageConf = $this->_objPageConf->getRow("code = ?", array($page_code));
+        $page_id = $rowPageConf['id'];
+
+        $sql = "SELECT pr.* ,ci.* FROM ".TB_PAGE_CONTENT. " as pr INNER JOIN ".TB_PAGE_CONTENT_LN." as ci ";
+        $sql .= " ON pr.id = ci.id ";
+        $sql .= " WHERE pr.page_id = ?";
+        $rsContent = Db::getInstance()->query($sql, array($page_id));
+
+        $rsContent = $this->_objPageContent->getAllRowsWithPage($page_id);
+        echo "<pre>";
+        print_r($rsContent);
+        echo "</pre>";
+        exit();
+
+//        foreach ($rsContent as $content)
+//        {
+//            if(!empty($content['icon'])) {
+//                @unlink(__UPLOAD_DATA_PATH.$content['icon']);
+//                echo 'Delete : '.__UPLOAD_DATA_PATH.$content['icon'];
+//            }
+//            if(!empty($content['image'])) {
+//                @unlink(__UPLOAD_DATA_PATH.$content['image']);
+//                @unlink(__UPLOAD_DATA_PATH.'thumb_'.$content['image']);
+//                echo 'Delete : '.__UPLOAD_DATA_PATH.$content['image'].' & (thumb_)';
+//            }
+//
+//        }
+    }
 	
 }

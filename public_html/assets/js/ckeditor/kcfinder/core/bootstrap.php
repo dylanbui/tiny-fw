@@ -20,6 +20,8 @@
   *        array. It's recommended to use constants instead.
   */
 
+// define the site path __SITE_PATH for '/application/config/config.php'
+define ('__SITE_PATH', realpath(dirname(dirname(__FILE__))));
 
 // PHP VERSION CHECK
 if (!preg_match('/^(\d+\.\d+)/', PHP_VERSION, $ver) || ($ver[1] < 5.3))
@@ -206,7 +208,9 @@ class SessionSaveHandler
 	public function loadConfig()
 	{
 		// application configuration file
-		$config_file = realpath(dirname(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))))) . '/application/config/config.php';
+//		$config_file = realpath(dirname(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))))) . '/application/config/config.php';
+        $config_file = realpath(dirname(dirname(dirname(dirname(dirname(__SITE_PATH)))))) . '/application/config/config.php';
+
 		$configuration = require $config_file;
 		
 		$this->sessionName = $configuration['session']['session_name'];
@@ -232,15 +236,13 @@ class SessionSaveHandler
 	public function read($id) 
 	{
 		try {
-			
-			$db_type = $this->db['db_type'];
 			$hostname = $this->db['db_hostname'];
 			$dbname = $this->db['db_name'];
 			$db_password = $this->db['db_password'];
 			$db_username = $this->db['db_username'];
 			$db_port = $this->db['db_port'];
 				
-			$dbh = new PDO("$db_type:host=$hostname;port=$db_port;dbname=$dbname", $db_username, $db_password);
+			$dbh = new PDO("mysql:host=$hostname;port=$db_port;dbname=$dbname", $db_username, $db_password);
 			$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			$dbh->query("SET NAMES 'UTF8'");
 					

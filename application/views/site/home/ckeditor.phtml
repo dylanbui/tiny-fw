@@ -11,6 +11,14 @@
 
 <script type="text/javascript" src="<?php echo __JS_URL; ?>ckeditor/ckeditor.js"></script>
 
+<style type="text/css">
+    textarea#files {
+        width: 600px;
+        height: 200px;
+        cursor: pointer
+    }
+</style>
+
 <script type="text/javascript"> 								
 
 function openKCFinder_Window(field) {
@@ -111,6 +119,31 @@ function openKCFinder_Images(div, url)
 	});		
 	
 }
+
+function openKCFinderMultiFiles(textarea)
+{
+    window.KCFinder = {
+        callBackMultiple: function(files) {
+            $.fancybox.close();
+            window.KCFinder = null;
+            textarea.value = "";
+            for (var i = 0; i < files.length; i++)
+                textarea.value += files[i] + "\n";
+        }
+    };
+//    window.open('<?php //echo __JS_URL; ?>//ckeditor/kcfinder/browse.php?type=images&dir=files/public',
+//        'kcfinder_multiple', 'status=0, toolbar=0, location=0, menubar=0, ' +
+//        'directories=0, resizable=1, scrollbars=0, width=800, height=600'
+//    );
+    url = '<?php echo __JS_URL; ?>ckeditor/kcfinder/browse.php?type=images&dir=files/public';
+    $.fancybox.open({
+        href : url,
+        windowName : 'kcfinder_multiple',
+        type : 'iframe',
+        padding : 5
+    });
+}
+
 	
 
 jQuery(document).ready(function ($) {
@@ -213,7 +246,19 @@ if there is a feature you think would be good, submit a patch, dont whine about 
 		<td>
 			<input type="file" name="content_file[]" class="multi max-10 accept-gif|jpg|png" />
 			
-	</tr>	
+	</tr>
+
+    <tr>
+        <td>Upload multi files
+        <td>
+            <textarea id="files" readonly="readonly" onclick="openKCFinderMultiFiles(this)">Click here and choose multiple files with the Ctrl/Command key.
+Then right click on one of them and choose "Select"</textarea>
+
+    </tr>
+
+
+
+
 	
 	<tr>
 		<td>Content HTML

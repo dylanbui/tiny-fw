@@ -159,6 +159,17 @@ abstract class Model
         return $sth['TotalRow'];
     }
 
+    /**
+     * Get count affected
+     *
+     * @Coder : DucBui 12/14/2010
+     * @access public
+     * @return count affected
+     */
+    public function countAffected()
+    {
+        return $this->_conn->countAffected();
+    }
 
     /**
      * On or Off active field
@@ -305,8 +316,8 @@ abstract class Model
      */
     public function runQuery($sql, $params = NULL)
     {
+        $sql = $this->compileBinds($sql, $params);
         $this->_sql = $sql;
-        $sql = $this->compileBinds($this->_sql, $params);
         return $this->_conn->query($sql);
     }
 
