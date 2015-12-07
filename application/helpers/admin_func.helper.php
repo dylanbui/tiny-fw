@@ -209,7 +209,7 @@ function load_define_input($arrConf ,$name ,$value = "" ,$css = "")
 			$display_name = $arrData['ref_display'];
 			$where_condition = df($arrData['ref_where'], NULL);
 			
-			$sql = "SELECT {$arrData['ref_id']} as display_id , {$display_name} as display_value FROM "._TB_PREFIX.$table;
+			$sql = "SELECT {$id} as display_id , {$display_name} as display_value FROM "._TB_PREFIX.$table;
 			if (!is_null($where_condition))
 				$sql .= " WHERE $where_condition ";
 						
@@ -242,7 +242,7 @@ function load_define_input($arrConf ,$name ,$value = "" ,$css = "")
 			$config = Config::getInstance();
 			$defaut_lang = $config->config_values['application']['language'];
 			
-			$sql = "SELECT p_cten_ln.{$arrData['ref_id']} as display_id , p_cten_ln.{$display_name} as display_value ";
+			$sql = "SELECT p_cten_ln.{$id} as display_id , p_cten_ln.{$display_name} as display_value ";
 			$sql .= " FROM `".TB_PAGE_CONTENT."`as p_cten ";
 			$sql .= " 	INNER JOIN `".TB_PAGE_CONFIGURE."` as p_cfg ON p_cten.page_id = p_cfg.id ";
 			$sql .= " 	INNER JOIN `".TB_PAGE_CONTENT_LN."`as p_cten_ln ON p_cten.id = p_cten_ln.id ";

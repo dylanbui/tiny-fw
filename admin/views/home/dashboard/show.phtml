@@ -1,4 +1,7 @@
 
+                <!--flaty css styles : panel item dashboard -->
+                <link rel="stylesheet" href="<?php echo __TEMPLATE_URL; ?>css/panel-item-dashboard.css">
+
 
                 <!-- BEGIN Page Title -->
                 <div class="page-title">
@@ -26,31 +29,47 @@
                 
                 <?php
                 	$i = 1;	 
-                	foreach ($menuInfo as $key => $sub_menus) : 
+                	foreach ($menuInfo as $key => $sub_menus) :
+
+//                        echo "<pre>";
+//                        print_r($sub_menus);
+//                        echo "</pre>";
+//                        exit;
+
                 ?>
-                
-                	<div class="span2">
-                		<a class="btn btn-block btn-primary text-center" href="<?php echo site_url($key)?>">
-                			<i class="<?php echo $sub_menus['icon'];?> icon-5x"></i><br>
-                			<p class="title"><?php echo $sub_menus['name']; ?></p>
-                		</a>
-                	</div>
-                	
+
+                        <div class="span3">
+                            <div class="panel panel-<?php echo $sub_menus['dashboard-item-color']; ?>">
+                                <div class="panel-heading">
+                                    <div class="row-fluid">
+                                        <div class="span3">
+                                            <i class="<?php echo $sub_menus['icon'];?> icon-5x"></i>
+                                        </div>
+
+                                        <div class="pull-right span8">
+                                            <div class="huge text-right">26</div>
+                                            <div class="text-left"><?php echo $sub_menus['name']; ?></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a href="<?php echo site_url($key)?>">
+                                    <div class="panel-footer">
+                                        <span class="pull-left"><?php echo $sub_menus['name']; ?></span>
+                                        <span class="pull-right"><i class="icon-circle-arrow-right"></i></span>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
                 	<?php 
-                		if(($i % 6) == 0 )
-                			echo "</div><div id='breadcrumbs'><br></div><div class='row-fluid'>";
-					?>                
-                
-                
-                <?php
-                	$i++; 
+                		if(($i % 4) == 0 )
+                			echo "</div><div class='row-fluid'>";
+                    	$i++;
                 	endforeach; 
-                ?>
-                
+                    ?>
                 </div>
                 
-                <br>
-
                 <!-- BEGIN Breadcrumb -->
                 <div id="breadcrumbs">
                     <ul class="breadcrumb">
@@ -65,19 +84,41 @@
                 <!-- BEGIN Main Content -->
                 
                 <div class="row-fluid">
-                
-                <?php foreach ($arrConfigSystemNav['sub_menus'] as $sub_menus) : ?>
-                
-                	<div class="span2">
-                		<a class="btn btn-block <?php echo $sub_menus['dashboard_btn']; ?> text-center" href="<?php echo site_url($sub_menus['link'])?>">
-                			<i class="<?php echo $sub_menus['icon'];?> icon-5x"></i><br>
-                			<p class="title"><?php echo $sub_menus['name']; ?></p>
-                		</a>
-                	</div>                
-                
-                
-                <?php endforeach; ?>
-                
+                <?php
+                    $i = 1;
+                    foreach ($arrConfigSystemNav['sub_menus'] as $sub_menus) :
+                ?>
+
+                    <div class="span3">
+                        <div class="panel panel-<?php echo $sub_menus['dashboard-item-color']; ?>">
+                            <div class="panel-heading">
+                                <div class="row-fluid">
+                                    <div class="span3">
+                                        <i class="<?php echo $sub_menus['icon'];?> icon-5x"></i>
+                                    </div>
+
+                                    <div class="pull-right span8">
+                                        <div class="huge text-right">26</div>
+                                        <div class="text-left"><?php echo $sub_menus['name']; ?></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="<?php echo site_url($sub_menus['link']); ?>">
+                                <div class="panel-footer">
+                                    <span class="pull-left"><?php echo $sub_menus['name']; ?></span>
+                                    <span class="pull-right"><i class="icon-circle-arrow-right"></i></span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                <?php
+                    if(($i % 4) == 0 )
+                        echo "</div><div class='row-fluid'>";
+                    $i++;
+                    endforeach;
+                ?>
                 </div>
                 
                 <div class="row-fluid">

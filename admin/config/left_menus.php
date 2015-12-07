@@ -44,31 +44,32 @@ return array(
 	
 			"name" => "Example Module",
 			"icon" => "icon-question",
-	
+            "dashboard-item-color" => "yellow", // Item Dashboard
+            // primary, green, red, yellow
 			"sub_menus" => array(
 					array(
 							"key" => "ex-module/category",
 							"name" => "Category",
 							"icon" => "icon-question",
-							"link" => "ex-module/category/list",
+							"link" => "ex-module/category/list"
 					),
 					array(
 							"key" => "ex-module/category",
 							"name" => "Category Add",
 							"icon" => "icon-file-alt",
-							"link" => "ex-module/category/add",
+							"link" => "ex-module/category/add"
 					),
 					array(
 							"key" => "ex-module/content",
 							"name" => "Content",
 							"icon" => "icon-question",
-							"link" => "ex-module/content/list",
+							"link" => "ex-module/content/list"
 					),
 					array(
 							"key" => "ex-module/content",
 							"name" => "Content Add",
 							"icon" => "icon-file-alt",
-							"link" => "ex-module/content/add",
+							"link" => "ex-module/content/add"
 					)
 			),
 	),
@@ -78,13 +79,14 @@ return array(
 	
 			"name" => "Contact",
 			"icon" => "icon-file-alt",
+            "dashboard-item-color" => "yellow", // Item Dashboard
 	
 			"sub_menus" => array(
 					array(
-							"key" => "home/contact",
-							"name" => "Contact List",
-							"icon" => "icon-file-alt",
-							"link" => "home/contact/list",
+                        "key" => "home/contact",
+                        "name" => "Contact List",
+                        "icon" => "icon-file-alt",
+                        "link" => "home/contact/list"
 					)
 			),
 	),
@@ -93,7 +95,8 @@ return array(
 				
 			"name" => "Configure System",
 			"icon" => "icon-gears",
-			
+            "dashboard-item-color" => "primary",
+            // primary, green, red, yellow
 			"sub_menus" => array(
 					array(
 							"key" => "home/member",
@@ -101,6 +104,7 @@ return array(
 							"dashboard_btn" => "btn-primary",
 							"icon" => "icon-facebook",
 							"link" => "home/member/list",
+                            "dashboard-item-color" => "green" // Item Dashboard
 					),
 					array(
 							"key" => "home/user",
@@ -108,6 +112,7 @@ return array(
 							"dashboard_btn" => "btn-primary",
 							"icon" => "icon-user",
 							"link" => "home/user/list",
+                            "dashboard-item-color" => "red" // Item Dashboard
 					),
 					array(
 							"key" => "home/group",
@@ -115,6 +120,7 @@ return array(
 							"dashboard_btn" => "btn-primary",
 							"icon" => "icon-group",
 							"link" => "home/group/list",
+                            "dashboard-item-color" => "red" // Item Dashboard
 					),										
 					array(
 							"key" => "page/configure",
@@ -122,6 +128,7 @@ return array(
 							"dashboard_btn" => "btn-primary",
 							"icon" => "icon-gears",
 							"link" => "page/configure/list",
+                            "dashboard-item-color" => "yellow" // Item Dashboard
 					),
 					array(
 							"key" => "home/config-system",
@@ -129,6 +136,7 @@ return array(
 							"dashboard_btn" => "btn-primary",
 							"icon" => "icon-cloud-download",
 							"link" => "home/config-system/backup-db",
+                            "dashboard-item-color" => "primary" // Item Dashboard
 					),					
 					array(
 							"key" => "home/config-system",
@@ -136,6 +144,7 @@ return array(
 							"dashboard_btn" => "btn-primary",
 							"icon" => "icon-gears",
 							"link" => "home/config-system/list",
+                            "dashboard-item-color" => "red" // Item Dashboard
 					)										
 			),			
 			

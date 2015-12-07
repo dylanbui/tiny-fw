@@ -26,8 +26,8 @@ class Home_DashboardController extends BaseController
 // 		echo "</pre>";
 // 		exit();
 		
-		$this->oView->menuInfo = $menuInfo;		
-				
+		$this->oView->menuInfo = $menuInfo;
+
 		$this->renderView('home/dashboard/show');
 	}
 	
@@ -134,6 +134,7 @@ class Home_DashboardController extends BaseController
 				$arrTemp = array();
 				$arrTemp['name'] = $rowPage['name'];
 				$arrTemp['icon'] = "icon-list-alt";
+                $arrTemp['dashboard-item-color'] = "red";
 	
 				$data = unserialize($rowPage['data']);
 	
@@ -151,15 +152,22 @@ class Home_DashboardController extends BaseController
 				$arrPageMenus[$key] = $arrTemp;
 			}
 		}
-	
+
+
 		$menuInfo = array();
 		$menus = require(__APP_PATH.'/config/left_menus.php');
 	
 		foreach ($menus as $key => $menu)
 		{
 			$arrTemp = array();
+
+//            echo "<pre>";
+//            print_r($menu);
+//            echo "</pre>";
+
 			$arrTemp['name'] = $menu['name'];
 			$arrTemp['icon'] = $menu['icon'];
+            $arrTemp['dashboard-item-color'] = $menu['dashboard-item-color'];
 				
 			foreach ($menu['sub_menus'] as $sub_menu)
 			{
@@ -174,7 +182,14 @@ class Home_DashboardController extends BaseController
 				$menuInfo[$key] = $arrTemp;
 			}
 		}
-	
+
+//        echo "<pre>";
+//        print_r(array_merge($arrPageMenus,$menuInfo));
+//        echo "</pre>";
+//        exit();
+//
+//        exit();
+
 		return array_merge($arrPageMenus,$menuInfo);
 	}
 	
