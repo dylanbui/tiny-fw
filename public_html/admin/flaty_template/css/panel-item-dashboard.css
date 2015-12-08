@@ -250,7 +250,10 @@
     font-size: 40px;
     padding: 10px 0px;
 }
-
+.panel .huge-sub {
+    font-size: 15px;
+    font-weight: bold;
+}
 /* panel-green */
 .panel-green {
     border-color: #5cb85c;
