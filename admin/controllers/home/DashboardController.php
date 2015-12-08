@@ -125,6 +125,11 @@ class Home_DashboardController extends BaseController
 		$rsPages = $objPageConf->getRowset("data <> ''");
 	
 		$objPageCat = new Page_Category();
+
+//        echo "<pre>";
+//        print_r($rsPages);
+//        echo "</pre>";
+//        exit();
 	
 		foreach ($rsPages as $rowPage)
 		{
@@ -133,9 +138,8 @@ class Home_DashboardController extends BaseController
 			{
 				$arrTemp = array();
 				$arrTemp['name'] = $rowPage['name'];
-				$arrTemp['icon'] = "icon-list-alt";
-                $arrTemp['dashboard-item-color'] = "red";
-	
+				$arrTemp['icon'] = $rowPage['icon'];//"icon-list-alt";
+
 				$data = unserialize($rowPage['data']);
 	
 				$arrSub = array();
@@ -160,15 +164,9 @@ class Home_DashboardController extends BaseController
 		foreach ($menus as $key => $menu)
 		{
 			$arrTemp = array();
-
-//            echo "<pre>";
-//            print_r($menu);
-//            echo "</pre>";
-
 			$arrTemp['name'] = $menu['name'];
 			$arrTemp['icon'] = $menu['icon'];
-            $arrTemp['dashboard-item-color'] = $menu['dashboard-item-color'];
-				
+
 			foreach ($menu['sub_menus'] as $sub_menu)
 			{
 				if ($this->oAuth->hasPermission('access',$sub_menu['key']))
@@ -182,13 +180,6 @@ class Home_DashboardController extends BaseController
 				$menuInfo[$key] = $arrTemp;
 			}
 		}
-
-//        echo "<pre>";
-//        print_r(array_merge($arrPageMenus,$menuInfo));
-//        echo "</pre>";
-//        exit();
-//
-//        exit();
 
 		return array_merge($arrPageMenus,$menuInfo);
 	}

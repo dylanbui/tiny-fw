@@ -41,6 +41,7 @@ class Page_ConfigureController extends BaseController
 			$data['name'] = $this->oInput->post('txtName' ,0);
 			$data['code'] = $this->oInput->post('txtCode' ,0);
 			$data['page'] = $this->oInput->post('txtPage' ,0);
+            $data['icon'] = $this->oInput->post('txtPageIcon' ,'icon-list-alt');
 			
 			// default display template content
 			$data['display_template_file'] = 'page/content/display-table-content';
@@ -64,12 +65,14 @@ class Page_ConfigureController extends BaseController
 		if ($this->oInput->isPost())
 		{
 			$data['name'] = $this->oInput->post('txtName');
+            $data['icon'] = $this->oInput->post('txtPageIcon');
 			$data['content'] = $this->oInput->post('txtContent');
 			$data['display_template_file'] = $this->oInput->post('txtDisplayDefaultTemplate');
 			$data['enable_seo_url'] = $this->oInput->post('chkSeoUrl');
 			
 			unset($this->oInput->_post['txtName']);
-			unset($this->oInput->_post['txtContent']);
+			unset($this->oInput->_post['txtPageIcon']);
+            unset($this->oInput->_post['txtContent']);
 			unset($this->oInput->_post['txtDisplayDefaultTemplate']);
 			unset($this->oInput->_post['chkSeoUrl']);
 			
