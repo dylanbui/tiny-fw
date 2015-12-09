@@ -61,17 +61,19 @@ $config['session']['primary_key'] 					= "session_id";
 // --- MAIL ---//
 
 $config['mail']['mailer_type'] 						= "system";
-$config['mail']['smtp_enable'] 						= TRUE;
 $config['mail']['smtp_auth'] 						= TRUE;
-$config['mail']['smtp_server'] 						= "mail.example.com";
-$config['mail']['smtp_port'] 						= 25;
+$config['mail']['smtp_server'] 						= "smtp.gmail.com";
+$config['mail']['smtp_secure'] 						= "ssl"; // secure transfer enabled REQUIRED for Gmail : tls
+$config['mail']['smtp_port'] 						= 465;
 $config['mail']['smtp_timeout'] 					= 30;
-$config['mail']['smtp_usr'] 						= "username";
-$config['mail']['smtp_psw'] 						= "password";
-$config['mail']['smtp_from_email'] 					= "admin@example.com";
+$config['mail']['smtp_html_content'] 				= TRUE;
+$config['mail']['smtp_usr'] 						= "dylanmobiledev@gmail.com";
+$config['mail']['smtp_psw'] 						= "akpoomydoyopmaug";
+$config['mail']['smtp_from_email'] 					= "buivantienduc@gmail.com";
 $config['mail']['smtp_from_name'] 					= "Duc Bui";
-$config['mail']['smtp_reply_email'] 				= "admin@example.com";
+$config['mail']['smtp_reply_email'] 				= "buivantienduc@gmail.com";
 $config['mail']['smtp_reply_name'] 					= "Duc Bui";
+$config['mail']['smtp_debug'] 					    = 0; // debugging: 1 = errors and messages, 2 = messages only
 
 // --- -------------------------------------------------------------------------------------------------- ---//
 // --- LOGGER ---//

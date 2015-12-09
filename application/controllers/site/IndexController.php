@@ -56,7 +56,11 @@ class Site_IndexController extends BaseController
             // Dia chi email chung thuc phai duoc cho phep truy cap tu cac ung dung khac
             // https://support.google.com/accounts/answer/6010255
             $mail->Username = "dylanmobiledev@gmail.com";
-            $mail->Password = '!qa2ws3ed';
+//            $mail->Password = '!qa2ws3ed';
+
+            // Khi tao 1 pw voi chung thuc 2-Step Verification, khong can phai chung thuc cho phep truy cap tu cac ung dung khac
+            // https://myaccount.google.com/security
+            $mail->Password = 'akpoomydoyopmaug';
 
             // Su dung google no se tu dong lay dia chi smtp
             // Muon thay doi Sent From thi phai Settings -> Accounts -> Send mail as -> Add another email address you own
@@ -76,6 +80,36 @@ class Site_IndexController extends BaseController
         }
 
         $this->oView->title = 'PHPMailer Service';
+        $this->oView->sub_title = 'Use PHPMailer Class';
+        $this->renderView('site/index/sent_email');
+    }
+
+    public function sentEmailSmtpAction()
+    {
+        // Cho phep truy cap KCFINDER
+        // Tranh truong hop truy cap thong wa duong link cua iframe
+        $_SESSION['KCFINDER'] = array();
+        $_SESSION['KCFINDER']['disabled'] = false; // Activate the uploader,
+
+        $this->oView->returnSentMail = null;
+        if ($this->oInput->isPost()) {
+
+            $mail = new Email();
+            $mail->to = $this->oInput->post('email');
+            $mail->subject = $this->oInput->post('subject');
+            $mail->body = $this->oInput->post('email_content');
+
+            $returnVal = $mail->sendWithSmtpConfig($this->oConfig->config_values['mail']);
+
+            if($returnVal == true) {
+                $this->oView->returnSentMail = '<td style="font-weight: bold;color: green; ">Message has been sent';
+            } else {
+                $this->oView->returnSentMail = '<td style="font-weight: bold;color: red; ">' . $returnVal;
+            }
+        }
+
+        $this->oView->title = 'SMTP Service';
+        $this->oView->sub_title = 'Use Email Class';
         $this->renderView('site/index/sent_email');
     }
 	
