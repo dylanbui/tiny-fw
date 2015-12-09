@@ -3,6 +3,7 @@
 class en
 {
 	const __HOME = 'Home';
+    const __SENT_EMAIL = 'Sent Email - PHPMailer';
 	const __RENDER_ACTION = 'Render Action';
 	const __PAGING = 'Paging';
 	const __NORMAL_DATABASE = 'Normal Database';
