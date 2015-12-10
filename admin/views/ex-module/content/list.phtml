@@ -43,9 +43,9 @@
                                           	<?php foreach ($rsCats as $rowCat) :
                                           				$selected =  ($rowCat['id'] == $cat_id ? "selected='selected'" : "");
                                           	?>
-                                          	<option value="<?php echo site_url('ex-module/content/list/'.$rowCat['id']); ?>" <?php echo $selected?> >
-                                          		<?php echo h($rowCat['name']);?>
-                                          	</option>
+                                                <option value="<?php echo site_url('ex-module/content/list/'.$rowCat['id']); ?>" <?php echo $selected?> >
+                                                    <?php echo h($rowCat['name']);?>
+                                                </option>
                                           	<?php endforeach; ?>
                                          </select> 
 									</label>									

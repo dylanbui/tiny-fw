@@ -44,7 +44,7 @@ try
 // 	exit();
 		
 	/*** include the helper ***/
- 	$_autoload_helpers = array('form','admin_func');
+ 	$_autoload_helpers = array('form','admin_func','array');
  	$lang = NULL;
  	$config = NULL;
 	

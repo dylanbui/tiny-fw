@@ -20,8 +20,13 @@ class ExModule_ContentController extends BaseController
 		$this->oView->box_action = "Danh Sách";
 		
 		$objCats = new Ex_ContentCats();		
-		$this->oView->rsCats = $objCats->getRowset("active = 1", NULL,"sort_order ASC");;
-		
+		$this->oView->rsCats = $objCats->getRowset("active = 1", NULL,"sort_order ASC");
+
+//        echo "<pre>";
+//        print_r($objCats->getRowset("active = 1", NULL,"sort_order ASC"));
+//        echo "</pre>";
+//        exit();
+
 		$offset = intval($offset);
 		$offset = ($offset % $this->_items_per_page != 0 ? 0 : $offset);
 		

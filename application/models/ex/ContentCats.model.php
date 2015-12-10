@@ -51,9 +51,7 @@ class Ex_ContentCats extends Model
 		$sql .= " WHERE parent_id = ? AND active = 1";
 		$sql .= " ORDER BY `sort_order` ASC";
 	
-		$sth = $this->query($sql, array($parent_id));
-	
-		$rsSubMenu = $sth->fetchAll(PDO::FETCH_ASSOC);
+        $rsSubMenu = $this->runQuery($sql, array($parent_id));
 	
 		foreach ($rsSubMenu as $row)
 		{
@@ -90,8 +88,7 @@ class Ex_ContentCats extends Model
 		$sql .= " WHERE parent_id = 0 AND active = 1";
 		$sql .= " ORDER BY `sort_order` ASC";
 	
-		$sth = $this->query($sql);
-		$rsSubMenu = $sth->fetchAll(PDO::FETCH_ASSOC);
+        $rsSubMenu = $this->runQuery($sql);
 	
 		$counter = 1;
 		$padding = 20*$counter;
@@ -108,9 +105,8 @@ class Ex_ContentCats extends Model
 				$str_html .= $this->recur_loadMenuTreeOptionHtml($selected_id ,$reject_sub_menu_id ,$row ,$counter + 1);
 			}
 		}
-	
-				$str_html .= "</select>";
-				return $str_html;
+        $str_html .= "</select>";
+        return $str_html;
 	}
 	
 	private function recur_loadMenuTreeOptionHtml($selected_id ,$reject_sub_menu_id = -1 ,$rowMenu = NULL, $counter)
@@ -122,8 +118,7 @@ class Ex_ContentCats extends Model
 		$sql .= " WHERE parent_id = ? AND active = 1";
 		$sql .= " ORDER BY `sort_order` ASC";
 	
-		$sth = $this->query($sql, array($rowMenu['id']));
-		$rsSubMenu = $sth->fetchAll(PDO::FETCH_ASSOC);
+        $rsSubMenu = $this->runQuery($sql, array($rowMenu['id']));
 	
 		foreach ($rsSubMenu as $row)
 		{
