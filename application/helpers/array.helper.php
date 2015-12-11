@@ -1,10 +1,10 @@
 <?php  if ( ! defined('__SITE_PATH')) exit('No direct script access allowed');
 // ------------------------------------------------------------------------
 
-function recursive($sourceArr,$parents = 0,$level = 1,&$resultArr){
+function recursive($sourceArr,$parent = 0,$level = 1,&$resultArr){
     if(count($sourceArr)>0){
         foreach ($sourceArr as $key => $value){
-            if($value['parents'] == $parents){
+            if($value['parent'] == $parent){
                 $value['level'] = $level;
                 $resultArr[] = $value;
                 $newParents = $value['id'];
@@ -15,7 +15,7 @@ function recursive($sourceArr,$parents = 0,$level = 1,&$resultArr){
     }
 }
 
-function cmsSelect($name,$value = null, $options, $attribs = null, $size = null ){
+function htmlSelectFromRecursiveArray($name,$value = null, $options, $attribs = null, $size = null ){
     if($size >1){
         $strSize = 'size="'. $size .'"';
     }

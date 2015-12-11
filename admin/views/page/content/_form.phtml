@@ -25,20 +25,17 @@
 
             <form id="validation-form"  method="POST" enctype="multipart/form-data" class="form-horizontal form-bordered" action="<?php echo $form_link; ?>">
 
-                <div class="clearfix">
-
-                    <?php if (df($arrGalleryField['use_gallery'],0) == 1 && $page_action == 'update')  : ?>
-                        <div class="pull-left btn-toolbar">
-                            <a href=# onclick="openGalleryWindow('<?php echo $gallery_link; ?>')" class="btn btn-primary">
-                                <i class="icon-picture"></i> Gallery Image (<span class='number_image' id='number_image'><?php echo $totalGalItem; ?></span>)
-                            </a>
-                        </div>
-                    <?php endif ; ?>
-
-                    <div class="pull-right btn-toolbar">
-                        <button class="btn btn-primary" type="submit"><i class="icon-save"></i> Save</button>
-                        <a href="<?php echo $cancel_link; ?>" class="btn btn-primary"><i class="icon-remove"></i> Cancel</a>
+                <?php if (df($arrGalleryField['use_gallery'],0) == 1 && $page_action == 'update')  : ?>
+                    <div class="pull-left btn-toolbar no-margin">
+                        <a href=# onclick="openGalleryWindow('<?php echo $gallery_link; ?>')" class="btn btn-primary">
+                            <i class="icon-picture"></i> Gallery Image (<span class='number_image' id='number_image'><?php echo $totalGalItem; ?></span>)
+                        </a>
                     </div>
+                <?php endif ; ?>
+
+                <div class="pull-right btn-toolbar no-margin">
+                    <button class="btn btn-primary" type="submit"><i class="icon-save"></i> Save</button>
+                    <a href="<?php echo $cancel_link; ?>" class="btn btn-primary"><i class="icon-remove"></i> Cancel</a>
                 </div>
 
                 <!-- BEGIN Main Content -->

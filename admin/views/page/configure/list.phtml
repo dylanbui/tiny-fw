@@ -2,30 +2,24 @@
 
 	<div class="header">
 		<div class="page-title">
-                    <div>
-                        <h1><i class="icon-file-alt"></i>Configure Pages</h1>
-                        <h4>Configure Pages !</h4>
-                    </div>
+            <div>
+                <h1><i class="icon-file-alt"></i>Configure Pages</h1>
+                <h4>Configure Pages !</h4>
+            </div>
         </div>		
 	</div>
 
 	<div class="container-fluid">
 		<div class="row-fluid">
 
-			<div class="clearfix">
-				<div class="pull-left">
-					<div class="btn-toolbar">
-						<a class="btn btn-primary" href="#" onclick="confimDelete('<?php echo site_url("page/configure/truncate"); ?>','Are you sure you want to truncate page module ?')"><i class="icon-plus"></i> Truncate page module database</a>
-						<a class="btn btn-primary" href="#" onclick="confimDelete('<?php echo site_url("page/configure/clear-all-record"); ?>','Are you sure you want to clear all record ?')"><i class="icon-cloud-upload"></i> Clear all module data record</a>									
-					</div>				
-				</div>
-				<div class="pull-right">
-					<div class="btn-toolbar">
-						<a data-toggle="modal" href="#modalCreatePage" class="btn btn-primary"><i class="icon-plus"></i> New Module Page</a>			
-					</div>				
-				</div>
-			</div>			
-			
+            <div class="btn-toolbar pull-left no-margin">
+                <a class="btn btn-primary" href="#" onclick="confimDelete('<?php echo site_url("page/configure/truncate"); ?>','Are you sure you want to truncate page module ?')"><i class="icon-plus"></i> Truncate page module database</a>
+                <a class="btn btn-primary" href="#" onclick="confimDelete('<?php echo site_url("page/configure/clear-all-record"); ?>','Are you sure you want to clear all record ?')"><i class="icon-cloud-upload"></i> Clear all module data record</a>
+            </div>
+            <div class="btn-toolbar pull-right no-margin">
+                <a data-toggle="modal" href="#modalCreatePage" class="btn btn-primary"><i class="icon-plus"></i> New Module Page</a>
+            </div>
+
             <!-- BEGIN Main Content -->
 			<div class="row-fluid">
                     <div class="span12">
